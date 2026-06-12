@@ -38,6 +38,9 @@ ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
 
+# Prisma braucht libssl.so.1.1 — Alpine hat nur libssl.so.3
+RUN apk add --no-cache openssl1.1-compat
+
 WORKDIR /app
 
 # Security: non-root user

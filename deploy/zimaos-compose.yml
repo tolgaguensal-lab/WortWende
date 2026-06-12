@@ -40,7 +40,6 @@ services:
       - ./zimaos.env
     environment:
       POSTGRES_USER: wortheld
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: wortheld
     # Kein Port-Mapping nach draußen — nur App erreicht die DB über das interne Netzwerk
     volumes:
