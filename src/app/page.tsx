@@ -28,7 +28,7 @@ export default async function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/register"><Button size="lg" className="bg-white text-blue-600 hover:bg-white/90 text-lg px-10 py-6 shadow-xl">Kostenlos starten</Button></Link>
-            <Link href="/login"><Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20 text-lg px-10 py-6">Ich habe bereits ein Konto</Button></Link>
+            <Link href="/login"><Button size="lg" variant="outline" className="border-2 border-white bg-transparent text-white hover:bg-white/20 text-lg px-10 py-6">Ich habe bereits ein Konto</Button></Link>
           </div>
         </section>
 
