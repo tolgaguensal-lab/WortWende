@@ -30,16 +30,13 @@ RUN npx prisma generate
 RUN npm run build
 
 # ---- Production Stage ----
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
 
 ARG APP_VERSION=0.0.0
 ENV APP_VERSION=${APP_VERSION}
 ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
-
-# Prisma braucht libssl.so.1.1 — Alpine hat nur libssl.so.3
-RUN apk add --no-cache openssl1.1-compat
 
 WORKDIR /app
 
