@@ -1,0 +1,75 @@
+name: wortheld
+
+services:
+  app:
+    container_name: wortheld-app
+    image: ghcr.io/tolgaguensal-lab/orthheld:latest
+    restart: unless-stopped
+    networks:
+      - wortheld-internal
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "casaos.name=WortHeld"
+      - "casaos.title=WortHeld"
+      - "casaos.description=Deutsch spielerisch lernen — Kurse, Vokabeln &amp; Grammatik von A1 bis C1"
+      - "casaos.icon=https://raw.githubusercontent.com/tolgaguensal-lab/orthheld/main/public/icons/icon-192x192.png"
+      - "casaos.category=Education"
+      - "casaos.port=3035"
+      - "casaos.author=Tolga Günsal"
+    ports:
+      - "3035:3000"
+    env_file:
+      - ./zimaos.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000"]
+      timeout: 10s
+      interval: 30s
+      retries: 3
+      start_period: 60s
+
+  postgres:
+    container_name: wortheld-postgres
+    image: postgres:16-alpine
+    restart: unless-stopped
+    networks:
+      - wortheld-internal
+    environment:
+      POSTGRES_USER: wortheld
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: wortheld
+    # Kein Port-Mapping nach draußen — nur App erreicht die DB über das interne Netzwerk
+    volumes:
+      - wortheld-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wortheld -d wortheld"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  watchtower:
+    container_name: wortheld-watchtower
+    image: containrrr/watchtower:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=3600
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_INCLUDE_STOPPED=false
+      - WATCHTOWER_TIMEOUT=60s
+
+# ──────────────────────────────────────────────
+# Isolation: Eigenes Netzwerk + eigenes Volume
+# → Kein Port-Conflict mit anderen PostgreSQL-Containern
+# → Kein Volume-Conflict
+# ──────────────────────────────────────────────
+networks:
+  wortheld-internal:
+    driver: bridge
+
+volumes:
+  wortheld-pgdata:
