@@ -51,6 +51,54 @@ enum Gender {
   NEUTER
 }
 
+enum LifeSituationCategory {
+  AMT
+  ARZT
+  ARBEIT
+  SCHULE
+  KITA
+  WOHNEN
+  EINKAUFEN
+  VERKEHR
+  BANK
+  VERSICHERUNG
+}
+
+enum SkillCategory {
+  LESEN
+  HOEREN
+  SCHREIBEN
+  SPRECHEN
+  GRAMMATIK
+  WORTSCHATZ
+}
+
+enum LessonStepType {
+  WORTSCHATZ
+  GRAMMATIK
+  HOEREN
+  LESEN
+  SCHREIBEN
+  SPRECHEN
+  MINI_GAME
+  TEST
+  WIEDERHOLUNG
+}
+
+enum ProviderType {
+  DEEPL
+  GOOGLE
+  AZURE
+  LIBRETRANSLATE
+  MOCK
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
   id             String         @id @default(uuid())
   email          String         @unique
@@ -70,6 +118,8 @@ model User {
   xpTransactions XPTransaction[]
   achievements   UserAchievement[]
   reviewItems    ReviewItem[]
+  skillProgress  UserSkillProgress[]
+  errorProfile   UserErrorProfile[]
 }
 
 model Account {
@@ -110,6 +160,8 @@ model UserProfile {
   id             String     @id @default(uuid())
   userId         String     @unique
   currentLevel   CEFRLevel  @default(A1)
+  placementLevel CEFRLevel?
+  targetGoal     String?
   totalXp        Int        @default(0)
   level          Int        @default(1)
   hearts         Int        @default(5)
@@ -124,6 +176,7 @@ model UserProfile {
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
   user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  placementTests PlacementTestResult[]
 }
 
 model Course {
@@ -154,19 +207,26 @@ model Unit {
 }
 
 model Lesson {
-  id          String     @id @default(uuid())
-  unitId      String
-  name        String
-  description String
-  order       Int
-  xpReward    Int        @default(10)
-  isLocked    Boolean    @default(true)
-  requiredXp  Int        @default(0)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  unit        Unit       @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  exercises   Exercise[]
-  progress    UserProgress[]
+  id                String     @id @default(uuid())
+  unitId            String
+  name              String
+  description       String
+  learningObjective String?
+  lifeSituationId   String?
+  skillCategory     SkillCategory?
+  order             Int
+  xpReward          Int        @default(10)
+  isLocked          Boolean    @default(true)
+  isPublished       Boolean    @default(false)
+  requiredXp        Int        @default(0)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  unit              Unit       @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  lifeSituation     LifeSituation? @relation(fields: [lifeSituationId], references: [id])
+  learningObjectives LearningObjective[]
+  lessonSteps       LessonStep[]
+  exercises         Exercise[]
+  progress          UserProgress[]
 }
 
 model Vocabulary {
@@ -182,6 +242,14 @@ model Vocabulary {
   steigerungJson  String?
   translationEn   String
   translationTr   String?
+  translationRu   String?
+  translationAr   String?
+  translationPl   String?
+  translationRo   String?
+  translationUk   String?
+  translationSq   String?
+  translationKu   String?
+  translationIt   String?
   exampleSentence String?
   exampleTranslation String?
   audioUrl        String?
@@ -386,4 +454,146 @@ model AdminContentReview {
   notes       String?
   reviewedAt  DateTime?
   createdAt   DateTime  @default(now())
+}
+
+model LifeSituation {
+  id        String                @id @default(uuid())
+  name      String
+  description String?
+  category  LifeSituationCategory
+  iconUrl   String?
+  order     Int
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+  lessons   Lesson[]
+}
+
+model LearningObjective {
+  id            String       @id @default(uuid())
+  lessonId      String
+  title         String
+  description   String?
+  lifeSituationId String?
+  cefrLevel     CEFRLevel
+  skillCategory SkillCategory
+  order         Int
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  lesson        Lesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+}
+
+model LessonStep {
+  id        String        @id @default(uuid())
+  lessonId  String
+  stepType  LessonStepType
+  title     String
+  content   String
+  order     Int
+  xpReward  Int           @default(5)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  lesson    Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+}
+
+model Translation {
+  id              String   @id @default(uuid())
+  sourceText      String
+  sourceLang      String
+  targetLang      String
+  translatedText  String
+  provider        String
+  glossaryId      String?
+  reviewedByAdmin Boolean  @default(false)
+  createdAt       DateTime @default(now())
+}
+
+model TranslationProvider {
+  id         String       @id @default(uuid())
+  name       String
+  type       ProviderType
+  apiKey     String?
+  endpoint   String?
+  isActive   Boolean      @default(true)
+  lastUsedAt DateTime?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model GlossaryTerm {
+  id              String    @id @default(uuid())
+  term            String
+  sourceLang      String
+  targetLang      String
+  translation     String
+  context         String?
+  level           CEFRLevel?
+  reviewedByAdmin Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model PlacementTest {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  cefrLevel   CEFRLevel
+  questions   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  results     PlacementTestResult[]
+}
+
+model PlacementTestResult {
+  id          String      @id @default(uuid())
+  userId      String
+  testId      String
+  score       Int
+  level       CEFRLevel
+  completedAt DateTime    @default(now())
+  user        UserProfile @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  test        PlacementTest @relation(fields: [testId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model UserSkillProgress {
+  id              String       @id @default(uuid())
+  userId          String
+  skillCategory   SkillCategory
+  cefrLevel       CEFRLevel
+  correctAnswers  Int          @default(0)
+  totalAttempts   Int          @default(0)
+  lastPracticedAt DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, skillCategory, cefrLevel])
+}
+
+model UserErrorProfile {
+  id             String    @id @default(uuid())
+  userId         String
+  errorType      String
+  errorMessage   String?
+  grammarTopic   String?
+  cefrLevel      CEFRLevel?
+  occurrences    Int       @default(1)
+  lastOccurredAt DateTime  @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model ReviewQueue {
+  id          String       @id @default(uuid())
+  contentType String
+  contentId   String
+  status      ReviewStatus @default(PENDING)
+  reviewerId  String?
+  notes       String?
+  createdAt   DateTime     @default(now())
+  reviewedAt  DateTime?
 }
