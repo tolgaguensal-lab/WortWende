@@ -1,20 +1,28 @@
 import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
 import { translateText, translateBatch, detectLanguage, getSupportedLanguages } from "@/lib/translation";
 
 export async function POST(req: Request) {
+  const session = await auth();
+  if (!session?.user) return NextResponse.json({ error: "Nicht authentifiziert" }, { status: 401 });
+
   try {
     const { text, texts, sourceLang, targetLang } = await req.json();
 
     if (texts && Array.isArray(texts)) {
-      const results = await translateBatch(texts, sourceLang ?? "de", targetLang);
+      const results = await translateBatch(texts, sourceLang ?? "de", targetLang ?? "en");
       return NextResponse.json({ results });
     }
 
-    if (!text) {
+    if (!text || typeof text !== "string") {
       return NextResponse.json({ error: "Text ist erforderlich" }, { status: 400 });
     }
 
-    const translated = await translateText(text, sourceLang ?? "de", targetLang);
+    if (text.length > 5000) {
+      return NextResponse.json({ error: "Text zu lang (max. 5000 Zeichen)" }, { status: 413 });
+    }
+
+    const translated = await translateText(text, sourceLang ?? "de", targetLang ?? "en");
     return NextResponse.json({ translatedText: translated });
   } catch (error) {
     console.error("Translation error:", error);
@@ -26,6 +34,9 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
+  const session = await auth();
+  if (!session?.user) return NextResponse.json({ error: "Nicht authentifiziert" }, { status: 401 });
+
   const { searchParams } = new URL(req.url);
   const action = searchParams.get("action");
 

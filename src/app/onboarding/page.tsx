@@ -112,7 +112,7 @@ export default function OnboardingPage() {
                 Deine Sprache ist nicht dabei?
               </p>
               <button
-                onClick={() => handleLanguageSelect("en")}
+                onClick={() => handleLanguageSelect("de")}
                 className="text-blue-600 hover:underline text-sm"
               >
                 Trotzdem mit Deutsch weitermachen
