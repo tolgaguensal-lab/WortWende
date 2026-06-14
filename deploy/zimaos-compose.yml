@@ -3,7 +3,7 @@ name: wortheld
 services:
   app:
     container_name: wortheld-app
-    image: ghcr.io/tolgaguensal-lab/orthheld:latest
+    image: ghcr.io/tolgaguensal-lab/wortheld:latest
     restart: unless-stopped
     networks:
       - wortheld-internal
@@ -12,7 +12,7 @@ services:
       - "casaos.name=WortHeld"
       - "casaos.title=WortHeld"
       - "casaos.description=Deutsch spielerisch lernen — Kurse, Vokabeln &amp; Grammatik von A1 bis C1"
-      - "casaos.icon=https://raw.githubusercontent.com/tolgaguensal-lab/orthheld/main/public/icons/icon-192x192.png"
+      - "casaos.icon=https://raw.githubusercontent.com/tolgaguensal-lab/wortheld/main/public/icons/icon-192x192.png"
       - "casaos.category=Education"
       - "casaos.port=3035"
       - "casaos.author=Tolga Günsal"

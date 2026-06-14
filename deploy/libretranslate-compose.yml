@@ -5,6 +5,8 @@ services:
     image: libretranslate/libretranslate:v1.9.6
     container_name: wortheld-libretranslate
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - "5001:5000"
     networks:
