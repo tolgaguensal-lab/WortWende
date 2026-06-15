@@ -34,11 +34,14 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }: { token: any; user: any }) {
+    async jwt({ token, user, trigger }: { token: any; user: any; trigger?: any }) {
       if (user) {
         token.userId = user.id;
-        const profile = await prisma.userProfile.findUnique({ where: { userId: user.id } });
+      }
+      if (token.userId) {
+        const profile = await prisma.userProfile.findUnique({ where: { userId: token.userId as string } });
         token.role = profile ? "USER" : "USER";
+        token.placementLevel = profile?.placementLevel || null;
       }
       return token;
     },
@@ -46,6 +49,7 @@ export const authOptions = {
       if (session.user) {
         session.user.id = token.userId as string;
         session.user.role = token.role as string;
+        session.user.placementLevel = token.placementLevel as string | null;
       }
       return session;
     },
