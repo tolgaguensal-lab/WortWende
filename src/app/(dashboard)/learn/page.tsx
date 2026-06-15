@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,23 +8,21 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const courses = [
-  { id: "a1", level: "A1", name: "Dorfleben", desc: "Grundlagen im Alltag", color: "from-green-400 to-green-600", icon: "🏘️", lessons: 7 },
-  { id: "a2", level: "A2", name: "Stadt", desc: "Im Alltag zurechtkommen", color: "from-blue-400 to-blue-600", icon: "🏙️", lessons: 8 },
-  { id: "b1", level: "B1", name: "Arbeitsplatz", desc: "Beruf und Karriere", color: "from-orange-400 to-orange-600", icon: "💼", lessons: 8 },
-  { id: "b2", level: "B2", name: "Universität", desc: "Studium und Forschung", color: "from-purple-400 to-purple-600", icon: "🎓", lessons: 8 },
-  { id: "c1", level: "C1", name: "Meisterklasse", desc: "Fortgeschrittenes Deutsch", color: "from-red-400 to-red-600", icon: "👑", lessons: 8 },
-];
+const levelMeta: Record<string, { label: string; color: string; icon: string }> = {
+  A1: { label: "Anfänger", color: "from-green-400 to-green-600", icon: "🌱" },
+  A2: { label: "Grundlagen", color: "from-blue-400 to-blue-600", icon: "🏙️" },
+  B1: { label: "Fortgeschritten", color: "from-orange-400 to-orange-600", icon: "💼" },
+  B2: { label: "Selbstständig", color: "from-purple-400 to-purple-600", icon: "🎓" },
+  C1: { label: "Experte", color: "from-red-400 to-red-600", icon: "👑" },
+};
 
-function getLevelLabel(level: string): string {
-  const labels: Record<string, string> = {
-    A1: "Anfänger",
-    A2: "Grundlagen",
-    B1: "Fortgeschritten",
-    B2: "Selbstständig",
-    C1: "Experte",
-  };
-  return labels[level] || level;
+interface Course {
+  id: string;
+  level: string;
+  name: string;
+  description: string;
+  totalLessons: number;
+  totalUnits: number;
 }
 
 export default function LearnPage() {
@@ -31,19 +30,44 @@ export default function LearnPage() {
   const searchParams = useSearchParams();
   const queryLevel = searchParams.get("level");
 
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const placementLevel = (queryLevel || (session?.user as any)?.placementLevel) as string | null;
+
+  useEffect(() => {
+    fetch("/api/courses")
+      .then((r) => r.json())
+      .then((data) => setCourses(data))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="p-6 max-w-4xl mx-auto">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 w-48 bg-muted rounded" />
+          <div className="h-4 w-64 bg-muted rounded" />
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="h-36 bg-muted rounded-xl" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <h1 className="text-3xl font-display font-bold mb-2">Lernpfad</h1>
-      <p className="text-muted-foreground mb-8">Wähle ein Kurs und starte deine Deutschreise</p>
+      <p className="text-muted-foreground mb-8">Wähle einen Kurs und starte deine Deutschreise</p>
 
       {placementLevel ? (
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mb-8 flex items-center gap-3">
           <span className="text-2xl">🎯</span>
           <div>
             <p className="font-semibold text-blue-800 dark:text-blue-200">
-              Empfohlenes Niveau: <strong>{placementLevel}</strong> &mdash; {getLevelLabel(placementLevel)}
+              Empfohlenes Niveau: <strong>{placementLevel}</strong> &mdash;{" "}
+              {levelMeta[placementLevel]?.label || placementLevel}
             </p>
             <p className="text-sm text-blue-600 dark:text-blue-400">
               Du kannst jedes Niveau wählen, das am besten zu dir passt.
@@ -69,13 +93,14 @@ export default function LearnPage() {
 
       <div className="space-y-6">
         {courses.map((course) => {
+          const meta = levelMeta[course.level] || { label: course.level, color: "from-gray-400 to-gray-600", icon: "📚" };
           const isRecommended = placementLevel === course.level;
           return (
             <Card key={course.id} className={`overflow-hidden transition-all hover:shadow-lg ${isRecommended ? "ring-2 ring-blue-500" : ""}`}>
-              <div className={`bg-gradient-to-r ${course.color} p-6 text-white`}>
+              <div className={`bg-gradient-to-r ${meta.color} p-6 text-white`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <span className="text-4xl">{course.icon}</span>
+                    <span className="text-4xl">{meta.icon}</span>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
                         <Badge className="bg-white/20 text-white border-0">{course.level}</Badge>
@@ -84,7 +109,7 @@ export default function LearnPage() {
                         )}
                       </div>
                       <h2 className="text-2xl font-display font-bold">{course.name}</h2>
-                      <p className="text-white/80">{course.desc}</p>
+                      <p className="text-white/80">{course.description}</p>
                     </div>
                   </div>
                   <Link href={`/learn/${course.id}`}>
@@ -93,8 +118,10 @@ export default function LearnPage() {
                 </div>
               </div>
               <CardContent className="p-4">
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>{course.lessons} Lektionen</span>
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <span>{course.totalUnits} Einheiten</span>
+                  <span>&middot;</span>
+                  <span>{course.totalLessons} Lektionen</span>
                 </div>
               </CardContent>
             </Card>
