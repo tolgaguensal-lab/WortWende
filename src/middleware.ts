@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const API_PREFIX = "/api/v1";
+const API_HOST = "api.orthheld.guenlab.de";
+const MAIN_HOST = "orthheld.guenlab.de";
 
 export default function middleware(req: NextRequest) {
+  const host = req.headers.get("host") || "";
   const { pathname } = req.nextUrl;
+
+  if (host === API_HOST && !pathname.startsWith(API_PREFIX)) {
+    return NextResponse.redirect(
+      new URL(`https://${MAIN_HOST}${pathname}${req.nextUrl.search}`)
+    );
+  }
 
   // CORS für API-Routen
   if (pathname.startsWith(API_PREFIX)) {
@@ -33,6 +42,9 @@ export default function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    "/",
+    "/onboarding",
+    "/placement-test",
     "/dashboard/:path*",
     "/learn/:path*",
     "/exercise/:path*",
