@@ -35,6 +35,12 @@ export default function AdminPage() {
           </CardContent>
         </Card>
         <Card>
+          <CardHeader><CardTitle className="font-display">API</CardTitle></CardHeader>
+          <CardContent className="space-y-3">
+            <Link href="/admin/api-keys"><Button variant="outline" className="w-full justify-start">🔑 API-Keys verwalten</Button></Link>
+          </CardContent>
+        </Card>
+        <Card>
           <CardHeader><CardTitle className="font-display">Qualität</CardTitle></CardHeader>
           <CardContent className="space-y-3">
             <Link href="/admin/review"><Button variant="outline" className="w-full justify-start">🔍 Qualitätskontrolle</Button></Link>
