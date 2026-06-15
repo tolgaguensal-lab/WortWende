@@ -1,5 +1,5 @@
-const CACHE_NAME = "deutschquest-v2";
-const STATIC_ASSETS = ["/", "/dashboard", "/learn", "/manifest.json"];
+const CACHE_NAME = "deutschquest-v3";
+const STATIC_ASSETS = ["/", "/manifest.json"];
 const API_CACHE = "deutschquest-api-v1";
 const VERSION_CACHE = "deutschquest-version";
 
