@@ -3,11 +3,11 @@ import { PrismaClient, LifeSituationCategory, ProviderType, LessonStepType, CEFR
 const prisma = new PrismaClient();
 
 const lifeSituations = [
-  { id: "ls-amt", name: "Amt & Behörde", description: "Formulare ausfüllen, Termine bei Ämtern, Briefe von Behörden verstehen", category: LifeSituationCategory.AMT, iconUrl: "/icons/amt.svg", order: 1 },
-  { id: "ls-arzt", name: "Arzt & Gesundheit", description: "Termin vereinbaren, Symptome beschreiben, Rezepte verstehen", category: LifeSituationCategory.ARZT, iconUrl: "/icons/arzt.svg", order: 2 },
+  { id: "ls-amt", name: "Amt & Behörde", description: "Formulare ausfüllen, Termine bei Ämtern, Briefe von Behörden verstehen", category: LifeSituationCategory.BEHOERDEN, iconUrl: "/icons/amt.svg", order: 1 },
+  { id: "ls-arzt", name: "Arzt & Gesundheit", description: "Termin vereinbaren, Symptome beschreiben, Rezepte verstehen", category: LifeSituationCategory.GESUNDHEIT, iconUrl: "/icons/arzt.svg", order: 2 },
   { id: "ls-arbeit", name: "Arbeit & Beruf", description: "Bewerbung, Vorstellungsgespräch, Arbeitsvertrag, Kollegen", category: LifeSituationCategory.ARBEIT, iconUrl: "/icons/arbeit.svg", order: 3 },
-  { id: "ls-schule", name: "Schule & Bildung", description: "Anmeldung, Gespräche mit Lehrern, Zeugnisse", category: LifeSituationCategory.SCHULE, iconUrl: "/icons/schule.svg", order: 4 },
-  { id: "ls-kita", name: "Kita & Familie", description: "Kita-Anmeldung, Elterngespräche, Betreuungsgeld", category: LifeSituationCategory.KITA, iconUrl: "/icons/kita.svg", order: 5 },
+  { id: "ls-schule", name: "Schule & Bildung", description: "Anmeldung, Gespräche mit Lehrern, Zeugnisse", category: LifeSituationCategory.BILDUNG, iconUrl: "/icons/schule.svg", order: 4 },
+  { id: "ls-kita", name: "Kita & Familie", description: "Kita-Anmeldung, Elterngespräche, Betreuungsgeld", category: LifeSituationCategory.KINDER, iconUrl: "/icons/kita.svg", order: 5 },
   { id: "ls-wohnen", name: "Wohnen & Umzug", description: "Wohnungssuche, Mietvertrag, Nebenkosten, Umzug", category: LifeSituationCategory.WOHNEN, iconUrl: "/icons/wohnen.svg", order: 6 },
   { id: "ls-einkaufen", name: "Einkaufen", description: "Supermarkt, Kleidung, Online-Shopping, Reklamation", category: LifeSituationCategory.EINKAUFEN, iconUrl: "/icons/einkaufen.svg", order: 7 },
   { id: "ls-verkehr", name: "Verkehr & Mobilität", description: "Bus & Bahn, Fahrplan, Ticket kaufen, Führerschein", category: LifeSituationCategory.VERKEHR, iconUrl: "/icons/verkehr.svg", order: 8 },
