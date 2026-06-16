@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const level = searchParams.get("level") as "A1" | "A2" | "B1" | "B2" | "C1" | null;
-  const search = searchParams.get("search") || "";
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "50");
 
@@ -15,36 +14,30 @@ export async function GET(request: NextRequest) {
   try {
     const where: any = { isPublished: true };
     if (level) where.level = level;
-    if (search) {
-      where.OR = [
-        { word: { contains: search, mode: "insensitive" } },
-        { translationEn: { contains: search, mode: "insensitive" } },
-      ];
-    }
 
-    const [vocabulary, total] = await Promise.all([
-      prisma.vocabulary.findMany({
+    const [grammarTopics, total] = await Promise.all([
+      prisma.grammarTopic.findMany({
         where,
         skip,
         take: limit,
-        orderBy: { word: "asc" },
+        orderBy: [{ level: "asc" }, { order: "asc" }],
       }),
-      prisma.vocabulary.count({ where }),
+      prisma.grammarTopic.count({ where }),
     ]);
 
     return NextResponse.json({
-      vocabulary,
+      grammarTopics,
       pagination: {
         page,
         limit,
         total,
         totalPages: Math.ceil(total / limit),
-        hasMore: skip + vocabulary.length < total,
+        hasMore: skip + grammarTopics.length < total,
       },
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Fehler beim Laden der Vokabeln", details: error instanceof Error ? error.message : String(error) },
+      { error: "Fehler beim Laden der Grammatik", details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
