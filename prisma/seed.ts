@@ -466,7 +466,7 @@ async function main() {
     await prisma.dTZTest.upsert({
       where: { id: test.id },
       update: { name: test.name, level: test.level, skill: test.skill, questions: test.questions },
-      create: { id: test.id, ...test, isActive: true, order: dtzTests.indexOf(test) },
+       create: { ...test, isActive: true, order: dtzTests.indexOf(test) },
     });
   }
   console.log(`  ✅ ${dtzTests.length} DTZ-Tests erstellt`);
