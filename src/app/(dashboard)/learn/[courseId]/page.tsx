@@ -161,7 +161,7 @@ export default function CoursePage({
             <div className="flex flex-wrap gap-6 ml-5">
               {unit.lessons.map((lesson, li) => {
                 const isLast = li === unit.lessons.length - 1;
-                const isLocked = lesson.isLocked && !lesson.isCurrent && !lesson.progress?.completed;
+                const isTrulyLocked = lesson.isLocked && !lesson.isCurrent;
                 return (
                   <div key={lesson.id} className="relative">
                     {!isLast && (
