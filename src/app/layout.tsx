@@ -3,11 +3,11 @@ import "./globals.css";
 import { Providers } from "@/components/shared/Providers";
 
 export const metadata: Metadata = {
-  title: "Echo - Deutsch für Alltag, Beruf & Integration",
-  description: "BAMF-konformer Deutschkurs von A1 bis C1. Integrationskurse, Berufsvorbereitung und DTZ-Prüfung – mehrsprachig erklärt.",
+  title: "Wortwende — Deutsch lernen, bis es Klick macht",
+  description: "Von A1 bis C1: echte Sprache für Alltag, Beruf, Integration und Prüfung. BAMF-konformer Deutschkurs.",
   manifest: "/manifest.json",
   icons: { icon: "/logo.png" },
-  appleWebApp: { capable: true, statusBarStyle: "default", title: "Echo" },
+  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Wortwende" },
 };
 
 export const viewport: Viewport = {
@@ -15,7 +15,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
-    themeColor: "#2D6A4F",
+  themeColor: "#0D2B45",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

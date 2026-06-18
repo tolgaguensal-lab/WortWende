@@ -37,9 +37,9 @@ export default function LoginPage() {
         <div className="text-center">
           <Link href="/" className="inline-flex items-center gap-2 mb-8">
             <div className="w-8 h-8 rounded-lg overflow-hidden shadow-sm">
-              <img src="/logo.png" alt="Echo" className="w-full h-full object-cover" />
+              <img src="/logo.png" alt="Wortwende" className="w-full h-full object-cover" />
             </div>
-            <span className="text-lg font-display font-bold text-foreground tracking-tight">Echo</span>
+            <span className="text-lg font-display font-bold text-foreground tracking-tight">Wortwende</span>
           </Link>
         </div>
 

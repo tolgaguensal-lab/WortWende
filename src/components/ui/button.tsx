@@ -15,6 +15,7 @@ const buttonVariants = cva(
         ghost: "text-muted-foreground hover:bg-muted hover:text-foreground",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         gold: "bg-accent text-accent-foreground hover:bg-accent/90",
+        accent: "bg-accent text-accent-foreground hover:bg-accent-hover shadow-lg shadow-accent/25 font-extrabold",
       },
       size: {
         sm: "h-9 px-4 text-[13px] font-medium",

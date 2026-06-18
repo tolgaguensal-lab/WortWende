@@ -25,10 +25,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <div className="p-5 border-b border-border/40">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg overflow-hidden shadow-sm">
-              <img src="/logo.png" alt="Echo" className="w-full h-full object-cover" />
+              <img src="/logo.png" alt="Wortwende" className="w-full h-full object-cover" />
             </div>
             <div>
-              <h1 className="text-base font-display font-bold text-foreground tracking-tight">Echo</h1>
+              <h1 className="text-base font-display font-bold text-foreground tracking-tight">Wortwende</h1>
               <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Deutsch lernen</p>
             </div>
           </div>

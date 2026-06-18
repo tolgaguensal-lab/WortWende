@@ -82,7 +82,7 @@ export default function OnboardingPage() {
             <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5">
               <Languages size={28} className="text-primary" />
             </div>
-            <h1 className="text-2xl font-display font-bold text-foreground mb-2">Willkommen bei Echo</h1>
+            <h1 className="text-2xl font-display font-bold text-foreground mb-2">Willkommen bei Wortwende</h1>
             <p className="text-muted-foreground text-sm mb-8">Wahle deine Muttersprache fur Hilfestellungen.</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
               {languages.map((lang) => (

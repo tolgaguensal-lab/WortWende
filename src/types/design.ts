@@ -3,15 +3,15 @@
  * Used for strict typing of component props and interaction contracts.
  */
 
-import type { colors, radii, spacing, animation, breakpoints, fonts, buttonSizes, skillIcons } from "@/lib/design-tokens";
+import type { colors, radii, fonts } from "@/lib/design-tokens";
 
 // ── Token Types ──
 
 export type ColorToken = keyof typeof colors;
 export type RadiusToken = keyof typeof radii;
-export type SpacingToken = keyof typeof spacing;
-export type AnimationToken = keyof typeof animation;
-export type BreakpointToken = keyof typeof breakpoints;
+export type SpacingToken = string;
+export type AnimationToken = string;
+export type BreakpointToken = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 export type FontToken = keyof typeof fonts;
 
 // ── Button Types ──
@@ -45,7 +45,7 @@ export type FeedbackType = "success" | "error" | "info" | "warning";
 
 // ── Skill Icon Types ──
 
-export type SkillIcon = keyof typeof skillIcons;
+export type SkillIcon = "BookOpen" | "Headphones" | "MessageSquare" | "PenLine" | "Sigma" | "BookA" | "RefreshCw" | "ScrollText";
 
 // ── Animation Presets ──
 
