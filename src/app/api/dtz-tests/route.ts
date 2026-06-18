@@ -39,6 +39,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(tests);
   } catch (error) {
+    console.error("[DTZ_ERROR]", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
