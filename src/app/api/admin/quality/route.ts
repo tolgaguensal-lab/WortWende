@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db";
 export async function GET() {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Nicht authentifiziert" }, { status: 401 });
-  if ((session.user as any).role !== "ADMIN") return NextResponse.json({ error: "Kein Admin" }, { status: 403 });
+  if (session.user.role !== "ADMIN") return NextResponse.json({ error: "Kein Admin" }, { status: 403 });
 
   const lessons = await prisma.lesson.findMany({
     include: {

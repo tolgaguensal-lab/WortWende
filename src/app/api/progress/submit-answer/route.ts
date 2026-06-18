@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Nicht authentifiziert" }, { status: 401 });
 
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
   const { exerciseId, answer, timeSpent } = await req.json();
 
   const exercise = await prisma.exercise.findUnique({ where: { id: exerciseId } });

@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Nicht authentifiziert" }, { status: 401 });
 
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
   const { lessonId, score, timeSpent } = await req.json();
 
   const progress = await prisma.userProgress.upsert({

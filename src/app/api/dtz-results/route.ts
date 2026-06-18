@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    const session = await auth();
+    if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -41,7 +40,7 @@ export async function POST(req: NextRequest) {
 
     const result = await prisma.dTZTestResult.create({
       data: {
-        userId: session.user.email,
+        userId: session.user.id,
         testId,
         score,
         passed,
@@ -67,15 +66,15 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    const session = await auth();
+    if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { searchParams } = new URL(req.url);
     const testId = searchParams.get("testId");
 
-    const where: any = { userId: session.user.email };
+    const where: any = { userId: session.user.id };
     if (testId) where.testId = testId;
 
     const results = await prisma.dTZTestResult.findMany({

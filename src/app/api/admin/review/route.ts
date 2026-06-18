@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db";
 export async function GET() {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Nicht authentifiziert" }, { status: 401 });
-  if ((session.user as any).role !== "ADMIN") return NextResponse.json({ error: "Kein Admin" }, { status: 403 });
+  if (session.user.role !== "ADMIN") return NextResponse.json({ error: "Kein Admin" }, { status: 403 });
 
   const items = await prisma.reviewQueue.findMany({
     where: { status: "PENDING" },
@@ -19,7 +19,7 @@ export async function GET() {
 export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Nicht authentifiziert" }, { status: 401 });
-  if ((session.user as any).role !== "ADMIN") return NextResponse.json({ error: "Kein Admin" }, { status: 403 });
+  if (session.user.role !== "ADMIN") return NextResponse.json({ error: "Kein Admin" }, { status: 403 });
 
   const { itemId, action } = await req.json();
   if (!itemId || !["approve", "reject"].includes(action)) {
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
   await prisma.reviewQueue.update({
     where: { id: itemId },
-    data: { status: newStatus, reviewerId: (session.user as any).id, reviewedAt: new Date() },
+       data: { status: newStatus, reviewerId: session.user.id, reviewedAt: new Date() },
   });
 
   // Auto-publish approved content

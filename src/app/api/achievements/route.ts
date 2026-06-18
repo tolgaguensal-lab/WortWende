@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db";
 export async function GET() {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Nicht authentifiziert" }, { status: 401 });
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
   const achievements = await prisma.achievement.findMany();
   const userAchievements = await prisma.userAchievement.findMany({ where: { userId } });
   const unlocked = new Set(userAchievements.map((ua) => ua.achievementId));

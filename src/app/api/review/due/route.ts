@@ -8,7 +8,7 @@ import { ReviewQuality } from "@/types";
 export async function GET() {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Nicht authentifiziert" }, { status: 401 });
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
   const items = await prisma.reviewItem.findMany({
     where: { userId, nextReview: { lte: new Date() } },
     include: { vocabulary: true },
@@ -21,7 +21,7 @@ export async function GET() {
 export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Nicht authentifiziert" }, { status: 401 });
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
   const { reviewItemId, quality } = await req.json();
   const item = await prisma.reviewItem.findUnique({ where: { id: reviewItemId } });
   if (!item) return NextResponse.json({ error: "Element nicht gefunden" }, { status: 404 });

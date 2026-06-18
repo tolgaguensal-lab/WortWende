@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
 
 export async function POST(req: Request) {
+  const session = await auth();
+  if (!session?.user) return NextResponse.json({ error: "Nicht authentifiziert" }, { status: 401 });
+
   const { text } = await req.json();
   const url = `${process.env.LANGUAGE_TOOL_API_URL ?? "https://api.languagetool.org"}/v2/check`;
   try {
