@@ -35,7 +35,7 @@ export function TestRunner({ testId, test, onComplete }: TestRunnerProps) {
   const [timeLeft, setTimeLeft] = useState(test.timeLimit * 60);
   const [showResult, setShowResult] = useState(false);
 
-  const questions = typeof test.questions === "string" ? JSON.parse(test.questions) : test.questions;
+  const questions: Question[] = typeof test.questions === "string" ? JSON.parse(test.questions) : test.questions;
 
   useEffect(() => {
     if (timeLeft <= 0) {
