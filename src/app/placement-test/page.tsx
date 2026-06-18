@@ -20,32 +20,33 @@ const PLACEMENT_QUESTIONS = [
   { id: "q10", level: "C1", skill: "Wortschatz", question: "Was bedeutet 'ambivalent'?", options: ["Eindeutig", "Zweideutig", "Sehr stark", "Unwichtig"], correctOption: "Zweideutig" },
 ];
 
+const levelColors: Record<string, string> = {
+  A1: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800",
+  A2: "bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-950/30 dark:text-sky-400 dark:border-sky-800",
+  B1: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800",
+  B2: "bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-950/30 dark:text-orange-400 dark:border-orange-800",
+  C1: "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-800",
+};
+
 export default function PlacementTestPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const progress = (step / (PLACEMENT_QUESTIONS.length + 1)) * 100;
 
   const handleAnswer = (option: string) => {
     const q = PLACEMENT_QUESTIONS[step - 1];
     const newAnswers = [...answers, { questionId: q.id, selectedOptionId: option, isCorrect: option === q.correctOption, level: q.level, skill: q.skill }];
     setAnswers(newAnswers);
-    if (step < PLACEMENT_QUESTIONS.length) {
-      setStep(step + 1);
-    } else {
-      setStep(step + 1);
-    }
+    if (step < PLACEMENT_QUESTIONS.length) setStep(step + 1);
+    else setStep(step + 1);
   };
 
   const submitResults = async () => {
     setIsSubmitting(true);
     try {
-      const res = await fetch("/api/placement-test/result", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers }),
-      });
+      const res = await fetch("/api/placement-test/result", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ answers }) });
       if (res.ok) router.push("/onboarding/result");
       else alert("Fehler beim Speichern.");
     } catch { alert("Netzwerkfehler."); }
@@ -54,101 +55,106 @@ export default function PlacementTestPage() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl space-y-6">
-        <div className="text-center">
-          <h1 className="text-3xl font-display font-bold text-foreground">Einstufungstest</h1>
-          <p className="text-muted-foreground mt-1">Finde dein perfektes Sprachniveau</p>
-        </div>
-
-        <div>
-          <div className="flex justify-between text-sm text-muted-foreground mb-2">
-            <span>Fortschritt</span>
-            <span>{Math.round(progress)}%</span>
-          </div>
-          <Progress value={progress} className="h-2" />
-        </div>
-
+      <div className="w-full max-w-xl space-y-6">
         {step === 0 && (
-          <Card className="border-0 shadow-xl">
-            <div className="h-2 bg-gradient-to-r from-blue-600 to-indigo-600" />
-            <CardHeader className="text-center pb-2">
-              <div className="mx-auto w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-4">
-                <GraduationCap size={32} />
+          <Card className="card-premium overflow-hidden">
+            <div className="h-1.5 bg-gradient-to-r from-[hsl(235,45%,55%)] to-[hsl(38,92%,50%)]" />
+            <CardHeader className="text-center pb-2 pt-8">
+              <div className="mx-auto w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
+                <GraduationCap size={30} className="text-primary" />
               </div>
-              <CardTitle className="text-2xl font-display">Willkommen zum Test</CardTitle>
-              <CardDescription className="text-base">
-                Dieser Test analysiert dein Wissen von A1 bis C1.
+              <CardTitle className="text-2xl font-display font-bold">Einstufungstest</CardTitle>
+              <CardDescription className="text-sm mt-1 max-w-sm mx-auto">
+                In wenigen Minuten ermitteln wir dein Sprachniveau (A1-C1).
               </CardDescription>
             </CardHeader>
-            <CardContent className="text-center py-6">
-              <ul className="text-left max-w-xs mx-auto space-y-3 text-muted-foreground text-sm">
-                <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-green-600" /> 10 gezielte Fragen</li>
-                <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-green-600" /> Grammatik & Wortschatz</li>
-                <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-green-600" /> Sofortige Niveaustufung</li>
+            <CardContent className="text-center py-6 px-8">
+              <ul className="text-left max-w-xs mx-auto space-y-3 text-sm">
+                <li className="flex items-center gap-3 text-muted-foreground">
+                  <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
+                  <span>10 gezielte Fragen</span>
+                </li>
+                <li className="flex items-center gap-3 text-muted-foreground">
+                  <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
+                  <span>Grammatik &amp; Wortschatz</span>
+                </li>
+                <li className="flex items-center gap-3 text-muted-foreground">
+                  <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
+                  <span>Sofortige Niveaustufung (GER/CEFR)</span>
+                </li>
               </ul>
             </CardContent>
             <CardFooter className="flex justify-center pb-8">
-              <Button size="lg" className="px-8 py-6 text-lg rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700" onClick={() => setStep(1)}>
-                Jetzt starten <ChevronRight className="ml-2" />
+              <Button size="lg" className="rounded-xl px-8 py-5 h-auto font-semibold shadow-lg shadow-primary/20" onClick={() => setStep(1)}>
+                Jetzt starten <ChevronRight size={18} className="ml-2" />
               </Button>
             </CardFooter>
           </Card>
         )}
 
         {step > 0 && step <= PLACEMENT_QUESTIONS.length && (
-          <Card className="border-0 shadow-xl">
-            <CardHeader>
-              <div className="flex justify-between items-center mb-4">
-                <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
-                  {PLACEMENT_QUESTIONS[step-1].level} • {PLACEMENT_QUESTIONS[step-1].skill}
-                </span>
-                <span className="text-xs text-muted-foreground">Frage {step} von {PLACEMENT_QUESTIONS.length}</span>
+          <>
+            <div>
+              <div className="flex justify-between text-xs text-muted-foreground mb-2">
+                <span>Frage {step} von {PLACEMENT_QUESTIONS.length}</span>
+                <span>{Math.round(progress)}%</span>
               </div>
-              <CardTitle className="text-xl font-display leading-relaxed">
-                {PLACEMENT_QUESTIONS[step-1].question}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {PLACEMENT_QUESTIONS[step-1].options.map((option, idx) => (
-                <Button
-                  key={idx}
-                  variant="outline"
-                  className="w-full justify-start h-auto py-4 px-4 hover:bg-primary/5 hover:border-primary transition-all rounded-xl text-left"
-                  onClick={() => handleAnswer(option)}
-                >
-                  <span className="w-6 h-6 rounded-full bg-muted text-muted-foreground text-xs flex items-center justify-center mr-3 shrink-0">
-                    {String.fromCharCode(65 + idx)}
+              <Progress value={progress} className="h-1.5" />
+            </div>
+
+            <Card className="card-premium">
+              <CardHeader className="pb-3">
+                <div className="flex justify-between items-center mb-3">
+                  <span className={`badge-premium ${levelColors[PLACEMENT_QUESTIONS[step-1].level]}`}>
+                    {PLACEMENT_QUESTIONS[step-1].level} • {PLACEMENT_QUESTIONS[step-1].skill}
                   </span>
-                  {option}
+                </div>
+                <CardTitle className="text-xl font-display leading-relaxed">
+                  {PLACEMENT_QUESTIONS[step-1].question}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2.5">
+                {PLACEMENT_QUESTIONS[step-1].options.map((option, idx) => (
+                  <Button
+                    key={idx}
+                    variant="outline"
+                    className="w-full justify-start h-auto py-3.5 px-4 hover:bg-primary/5 hover:border-primary/40 transition-all rounded-xl text-left font-normal"
+                    onClick={() => handleAnswer(option)}
+                  >
+                    <span className="w-7 h-7 rounded-lg bg-secondary text-muted-foreground text-xs font-semibold flex items-center justify-center mr-3 shrink-0">
+                      {String.fromCharCode(65 + idx)}
+                    </span>
+                    {option}
+                  </Button>
+                ))}
+              </CardContent>
+              <CardFooter className="flex justify-between pt-2 pb-4 px-6">
+                <Button variant="ghost" onClick={() => setStep(step - 1)} disabled={step === 1} className="text-muted-foreground text-sm">
+                  <ChevronLeft size={15} className="mr-1" /> Zurück
                 </Button>
-              ))}
-            </CardContent>
-            <CardFooter className="flex justify-between py-4 border-t border-border">
-              <Button variant="ghost" onClick={() => setStep(step - 1)} disabled={step === 1} className="text-muted-foreground">
-                <ChevronLeft size={16} className="mr-2" /> Zurück
-              </Button>
-            </CardFooter>
-          </Card>
+              </CardFooter>
+            </Card>
+          </>
         )}
 
         {step > PLACEMENT_QUESTIONS.length && (
-          <Card className="border-0 shadow-xl text-center">
-            <CardHeader>
-              <div className="mx-auto w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
-                <CheckCircle2 size={40} />
+          <Card className="card-premium text-center">
+            <CardHeader className="pt-8">
+              <div className="mx-auto w-20 h-20 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center mb-4">
+                <CheckCircle2 size={40} className="text-emerald-500" />
               </div>
-              <CardTitle className="text-2xl font-display">Test abgeschlossen!</CardTitle>
-              <CardDescription className="text-base">
+              <CardTitle className="text-2xl font-display font-bold">Test abgeschlossen!</CardTitle>
+              <CardDescription className="text-sm mt-1">
                 Wir analysieren deine Antworten.
               </CardDescription>
             </CardHeader>
-            <CardContent className="py-8">
-              <p className="text-muted-foreground text-sm mb-6">
+            <CardContent className="py-6">
+              <p className="text-muted-foreground text-sm">
                 Du hast alle {PLACEMENT_QUESTIONS.length} Fragen beantwortet.
               </p>
             </CardContent>
             <CardFooter className="flex justify-center pb-8">
-              <Button size="lg" className="px-12 py-6 text-lg rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700" onClick={submitResults} disabled={isSubmitting}>
+              <Button size="lg" className="rounded-xl px-10 py-5 h-auto font-semibold shadow-lg shadow-primary/20" onClick={submitResults} disabled={isSubmitting}>
                 {isSubmitting ? "Analysiere..." : "Ergebnis anzeigen"}
               </Button>
             </CardFooter>
