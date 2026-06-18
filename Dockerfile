@@ -69,11 +69,7 @@ RUN { \
       echo 'echo ""'; \
       echo ''; \
       echo 'echo "→ Datenbank-Migration...";'; \
-      echo 'if npx prisma migrate deploy 2>/dev/null; then'; \
-      echo '  echo "✅ Migration erfolgreich"'; \
-      echo 'else'; \
-      echo '  echo "⚠️  Migration übersprungen (kein DB-Zugang oder Tabellen vorhanden)"'; \
-      echo 'fi'; \
+      echo 'npx prisma@5.22.0 migrate deploy 2>&1 || echo "⚠️  Migration nicht möglich (DB nicht bereit oder Tabellen existieren)"'; \
       echo 'echo ""'; \
       echo ''; \
       echo 'exec node server.js'; \
