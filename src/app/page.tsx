@@ -40,8 +40,8 @@ export default async function HomePage() {
       <nav className="sticky top-0 z-50 w-full h-16 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center shadow-md">
-              <span className="text-primary-foreground font-display font-bold text-lg">E</span>
+            <div className="w-9 h-9 rounded-lg overflow-hidden shadow-md">
+              <img src="/logo.png" alt="Echo" className="w-full h-full object-cover" />
             </div>
             <span className="text-xl font-display font-bold text-foreground tracking-tight">Echo</span>
           </div>
@@ -189,8 +189,8 @@ export default async function HomePage() {
       <footer className="border-t border-border py-10 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-md bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-display font-bold text-xs">E</span>
+            <div className="w-7 h-7 rounded-md overflow-hidden">
+              <img src="/logo.png" alt="Echo" className="w-full h-full object-cover" />
             </div>
             <span className="text-muted-foreground text-sm">Echo &copy; {new Date().getFullYear()}</span>
           </div>

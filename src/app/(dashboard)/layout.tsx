@@ -24,8 +24,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
         {/* Brand */}
         <div className="p-5 border-b border-border/40">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-sm">
-              <span className="text-white font-display font-bold text-sm">E</span>
+            <div className="w-8 h-8 rounded-lg overflow-hidden shadow-sm">
+              <img src="/logo.png" alt="Echo" className="w-full h-full object-cover" />
             </div>
             <div>
               <h1 className="text-base font-display font-bold text-foreground tracking-tight">Echo</h1>
