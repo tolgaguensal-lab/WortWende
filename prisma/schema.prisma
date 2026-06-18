@@ -29,6 +29,32 @@ model User {
   progress       UserProgress[]
   skillProgress  UserSkillProgress[]
   xpTransactions XPTransaction[]
+  entitlements   Entitlement[]
+}
+
+model Entitlement {
+  id            String    @id @default(uuid())
+  userId        String
+  levelCode     CEFRLevel
+  grantedAt     DateTime  @default(now())
+  expiresAt     DateTime?
+  purchaseId    String?
+  source        String    // 'PURCHASE', 'SUBSCRIPTION', 'FREE_TIER', 'ADMIN'
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, levelCode])
+}
+
+model Subscription {
+  id               String    @id @default(uuid())
+  userId           String    @unique
+  planId           String    // e.g., 'premium_monthly', 'premium_yearly'
+  status           String    // 'active', 'canceled', 'expired'
+  startDate        DateTime  @default(now())
+  endDate          DateTime
+  revenueCatId     String?   // External ID for sync
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
 
 model Account {
