@@ -13,20 +13,20 @@ interface Message {
   content: string;
 }
 
-// ── Session Topics ───────────────────────────────────────────────────────
+// â”€â”€ Session Topics â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const SESSION_TOPICS = [
-  { id: "dativ", label: "Dativ", icon: "📚", desc: "Wem? – Den Dativ verstehen" },
-  { id: "akkusativ", label: "Akkusativ", icon: "📖", desc: "Wen oder was?" },
-  { id: "perfekt", label: "Perfekt", icon: "⏰", desc: "Vergangenheit bilden" },
-  { id: "praepositionen", label: "Präpositionen", icon: "📍", desc: "in, an, auf, bei..." },
-  { id: "artikel", label: "Artikel", icon: "📝", desc: "der, die, das trainieren" },
-  { id: "satzbau", label: "Satzbau", icon: "🏗️", desc: "Hauptsatz & Nebensatz" },
-  { id: "alltag", label: "Alltag", icon: "🛒", desc: "Einkaufen, Arzt, Behörden" },
-  { id: "beruf", label: "Beruf", icon: "💼", desc: "Bewerbung, Arbeit" },
+  { id: "dativ", label: "Dativ", icon: "ðŸ“š", desc: "Wem? â€“ Den Dativ verstehen" },
+  { id: "akkusativ", label: "Akkusativ", icon: "ðŸ“–", desc: "Wen oder was?" },
+  { id: "perfekt", label: "Perfekt", icon: "â°", desc: "Vergangenheit bilden" },
+  { id: "praepositionen", label: "PrÃ¤positionen", icon: "ðŸ“", desc: "in, an, auf, bei..." },
+  { id: "artikel", label: "Artikel", icon: "ðŸ“", desc: "der, die, das trainieren" },
+  { id: "satzbau", label: "Satzbau", icon: "ðŸ—ï¸", desc: "Hauptsatz & Nebensatz" },
+  { id: "alltag", label: "Alltag", icon: "ðŸ›’", desc: "Einkaufen, Arzt, BehÃ¶rden" },
+  { id: "beruf", label: "Beruf", icon: "ðŸ’¼", desc: "Bewerbung, Arbeit" },
 ];
 
-// ── Helpers ─────────────────────────────────────────────────────────────
+// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function speakText(text: string, lang = "de-DE") {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
@@ -44,7 +44,7 @@ function stripHtml(text: string) {
   return text.replace(/<[^>]*>/g, "");
 }
 
-// ── Component ────────────────────────────────────────────────────────────
+// â”€â”€ Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export function AIChat() {
   const [mode, setMode] = useState<"chat" | "session">("chat");
@@ -54,7 +54,7 @@ export function AIChat() {
     {
       role: "assistant",
       content:
-        "Hallo! 👋 Ich bin dein Wortwende-Tutor. Wähle ein <strong>Thema</strong> für eine geführte Lernsession – oder stell mir einfach eine Frage!",
+        "Hallo! ðŸ‘‹ Ich bin dein Wortwende-Tutor. WÃ¤hle ein <strong>Thema</strong> fÃ¼r eine gefÃ¼hrte Lernsession â€“ oder stell mir einfach eine Frage!",
     },
   ]);
   const [input, setInput] = useState("");
@@ -88,7 +88,7 @@ export function AIChat() {
 
         if (!response.ok) {
           const err = await response.json();
-          setMessages(prev => [...prev, { role: "assistant", content: `❌ ${err.error ?? "Fehler"}` }]);
+          setMessages(prev => [...prev, { role: "assistant", content: `âŒ ${err.error ?? "Fehler"}` }]);
           setLoading(false);
           return;
         }
@@ -113,7 +113,7 @@ export function AIChat() {
                 assistantContent += parsed.content;
                 setMessages(prev => { const copy = [...prev]; copy[copy.length - 1] = { role: "assistant", content: assistantContent }; return copy; });
               }
-              if (parsed.error) assistantContent = `❌ ${parsed.error}`;
+              if (parsed.error) assistantContent = `âŒ ${parsed.error}`;
             } catch { /* skip */ }
           }
         }
@@ -125,7 +125,7 @@ export function AIChat() {
           setSessionXp(s => s + xp);
         }
       } catch (error) {
-        setMessages(prev => [...prev, { role: "assistant", content: `❌ Netzwerkfehler: ${error instanceof Error ? error.message : ""}` }]);
+        setMessages(prev => [...prev, { role: "assistant", content: `âŒ Netzwerkfehler: ${error instanceof Error ? error.message : ""}` }]);
       } finally {
         setLoading(false);
       }
@@ -137,9 +137,9 @@ export function AIChat() {
     setMode("session");
     setSessionTopic(topic.label);
     setSessionXp(0);
-    const msg = `[SESSION_START: ${topic.label}] Ich möchte ${topic.desc.toLowerCase()} lernen.`;
+    const msg = `[SESSION_START: ${topic.label}] Ich mÃ¶chte ${topic.desc.toLowerCase()} lernen.`;
     setMessages([
-      { role: "assistant", content: `🎯 <strong>Session: ${topic.label}</strong> – ${topic.desc}\n\nLass uns starten!` },
+      { role: "assistant", content: `ðŸŽ¯ <strong>Session: ${topic.label}</strong> â€“ ${topic.desc}\n\nLass uns starten!` },
       { role: "user", content: msg },
     ]);
     // Auto-trigger the session start
@@ -159,10 +159,10 @@ export function AIChat() {
         </div>
         <div className="flex-1">
           <h2 className="text-sm font-semibold text-foreground">
-            Wortwende Tutor {sessionTopic && <span className="text-accent">· {sessionTopic}</span>}
+            Wortwende Tutor {sessionTopic && <span className="text-accent">Â· {sessionTopic}</span>}
           </h2>
           <p className="text-xs text-muted-foreground">
-            {loading ? "Schreibt..." : mode === "session" ? `Session · +${sessionXp} XP` : "Online · KI-gestützt"}
+            {loading ? "Schreibt..." : mode === "session" ? `Session Â· +${sessionXp} XP` : "Online Â· KI-gestÃ¼tzt"}
           </p>
         </div>
         {mode === "session" && (
@@ -176,7 +176,7 @@ export function AIChat() {
       {mode === "chat" && messages.length <= 1 && (
         <div className="px-4 py-3 border-b border-border/30 bg-gradient-to-r from-primary/5 to-accent/5">
           <p className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1.5">
-            <Sparkles size={12} className="text-accent" /> Geführte Lernsessions
+            <Sparkles size={12} className="text-accent" /> GefÃ¼hrte Lernsessions
           </p>
           <div className="grid grid-cols-4 gap-2">
             {SESSION_TOPICS.slice(0, 4).map(t => (
@@ -221,8 +221,8 @@ export function AIChat() {
                   : "bg-card border border-border/50 text-foreground rounded-bl-md shadow-sm"
               }`}
               dangerouslySetInnerHTML={{ __html: msg.content
-                .replace(/\[ÜBUNG:(MC|LÜCKE|SATZ)\].*?\[\/ÜBUNG\]/gs, '<div class="mt-2 p-3 rounded-xl bg-accent/5 border border-accent/20 text-xs font-medium">🎯 Übungsaufgabe</div>')
-                .replace(/\[SESSION_ENDE:\s*\+\d+\]/g, '<div class="mt-2 text-xs text-accent font-bold">✅ Session abgeschlossen!</div>')
+                .replace(/\[ÃœBUNG:(MC|LÃœCKE|SATZ)\].*?\[\/ÃœBUNG\]/gs, '<div class="mt-2 p-3 rounded-xl bg-accent/5 border border-accent/20 text-xs font-medium">ðŸŽ¯ Ãœbungsaufgabe</div>')
+                .replace(/\[SESSION_ENDE:\s*\+\d+\]/g, '<div class="mt-2 text-xs text-accent font-bold">âœ… Session abgeschlossen!</div>')
                 .replace(/\n/g, '<br/>')
               }}
             />
@@ -265,7 +265,7 @@ export function AIChat() {
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={isListening ? "Höre zu..." : mode === "session" ? "Deine Antwort..." : "Frag mich etwas auf Deutsch..."}
+            placeholder={isListening ? "HÃ¶re zu..." : mode === "session" ? "Deine Antwort..." : "Frag mich etwas auf Deutsch..."}
             disabled={loading}
             className="flex-1 bg-background border border-border/60 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent disabled:opacity-50"
           />
@@ -279,219 +279,8 @@ export function AIChat() {
           </Button>
         </div>
         <p className="text-[10px] text-muted-foreground/50 mt-1.5 text-center">
-          {isListening ? "🎤 Sprich jetzt..." : mode === "session" ? "Antworte auf die Übung – der Tutor korrigiert dich." : "Tippe oder sprich – der Tutor versteht beides."}
+          {isListening ? "ðŸŽ¤ Sprich jetzt..." : mode === "session" ? "Antworte auf die Ãœbung â€“ der Tutor korrigiert dich." : "Tippe oder sprich â€“ der Tutor versteht beides."}
         </p>
-      </div>
-    </div>
-  );
-}
-
-  const { isListening, transcript, startListening, stopListening, supported: voiceSupported } =
-    useVoiceInput({ lang: "de-DE" });
-
-  // Auto-scroll
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [messages]);
-
-  // Voice transcript → input
-  useEffect(() => {
-    if (transcript) setInput(transcript);
-  }, [transcript]);
-
-  const sendMessage = useCallback(
-    async (text?: string) => {
-      const messageText = (text ?? input).trim();
-      if (!messageText || loading) return;
-
-      const userMessage: Message = { role: "user", content: messageText };
-      const updatedMessages = [...messages, userMessage];
-      setMessages(updatedMessages);
-      setInput("");
-      setLoading(true);
-
-      try {
-        const response = await fetch("/api/tutor/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: updatedMessages }),
-        });
-
-        if (!response.ok) {
-          const err = await response.json();
-          setMessages(prev => [
-            ...prev,
-            { role: "assistant", content: `❌ Fehler: ${err.error ?? "Unbekannter Fehler"}` },
-          ]);
-          setLoading(false);
-          return;
-        }
-
-        // Stream reader
-        const reader = response.body?.getReader();
-        if (!reader) throw new Error("No stream");
-
-        const decoder = new TextDecoder();
-        let assistantContent = "";
-        setMessages(prev => [...prev, { role: "assistant", content: "" }]);
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split("\n");
-
-          for (const line of lines) {
-            if (!line.startsWith("data: ")) continue;
-            const data = line.slice(6);
-            if (data === "[DONE]") break;
-
-            try {
-              const parsed = JSON.parse(data);
-              if (parsed.content) {
-                assistantContent += parsed.content;
-                setMessages(prev => {
-                  const copy = [...prev];
-                  copy[copy.length - 1] = { role: "assistant", content: assistantContent };
-                  return copy;
-                });
-              }
-              if (parsed.error) {
-                assistantContent = `❌ ${parsed.error}`;
-              }
-            } catch {
-              // skip
-            }
-          }
-        }
-      } catch (error) {
-        setMessages(prev => [
-          ...prev,
-          {
-            role: "assistant",
-            content: `❌ Netzwerkfehler: ${error instanceof Error ? error.message : "Unbekannt"}`,
-          },
-        ]);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [input, loading, messages]
-  );
-
-  const handleSpeak = (text: string) => {
-    setSpeaking(true);
-    speakText(text);
-    setTimeout(() => setSpeaking(false), 3000);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  };
-
-  return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-2xl mx-auto">
-      {/* Header */}
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-border/40 bg-card/50 backdrop-blur-sm">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-sm">
-          <Bot size={18} className="text-white" />
-        </div>
-        <div>
-          <h2 className="text-sm font-semibold text-foreground">Wortwende Tutor</h2>
-          <p className="text-xs text-muted-foreground">
-            {loading ? "Schreibt..." : "Online · KI-gestützt"}
-          </p>
-        </div>
-      </div>
-
-      {/* Messages */}
-      <div
-        ref={scrollRef}
-        className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scrollbar-premium"
-      >
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`flex gap-3 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-          >
-            {msg.role === "assistant" && (
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
-                <Bot size={15} className="text-white" />
-              </div>
-            )}
-            <div
-              className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                msg.role === "user"
-                  ? "bg-primary text-primary-foreground rounded-br-md"
-                  : "bg-card border border-border/50 text-foreground rounded-bl-md shadow-sm"
-              }`}
-            >
-              {msg.content || (loading && i === messages.length - 1 ? <Loader2 size={14} className="animate-spin" /> : null)}
-              {msg.role === "assistant" && msg.content && !loading && (
-                <button
-                  onClick={() => handleSpeak(msg.content)}
-                  className="ml-2 inline-flex items-center text-muted-foreground/60 hover:text-accent transition-colors"
-                  title="Vorlesen"
-                >
-                  <Volume2 size={12} />
-                </button>
-              )}
-            </div>
-            {msg.role === "user" && (
-              <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0 mt-0.5">
-                <User size={15} className="text-muted-foreground" />
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Input */}
-      <div className="border-t border-border/40 bg-card/50 backdrop-blur-sm px-4 py-3">
-        <div className="flex items-center gap-2">
-          {voiceSupported && (
-            <button
-              onClick={() => (isListening ? stopListening() : startListening())}
-              className={`p-2.5 rounded-xl transition-all shrink-0 ${
-                isListening
-                  ? "bg-accent text-white animate-pulse shadow-lg shadow-accent/30"
-                  : "bg-secondary text-muted-foreground hover:text-accent hover:bg-accent-muted"
-              }`}
-              title={isListening ? "Aufnahme stoppen" : "Spracheingabe"}
-            >
-              {isListening ? <Mic size={18} /> : <MicOff size={18} />}
-            </button>
-          )}
-          <input
-            ref={inputRef}
-            type="text"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={isListening ? "Höre zu..." : "Frag mich etwas auf Deutsch..."}
-            disabled={loading}
-            className="flex-1 bg-background border border-border/60 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent disabled:opacity-50"
-          />
-          <Button
-            onClick={() => sendMessage()}
-            disabled={!input.trim() || loading}
-            size="icon"
-            className="rounded-xl shrink-0 bg-accent hover:bg-accent-hover text-white shadow-lg shadow-accent/20 h-10 w-10"
-          >
-            {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
-          </Button>
-        </div>
-        {voiceSupported && (
-          <p className="text-[10px] text-muted-foreground/50 mt-1.5 text-center">
-            {isListening ? "🎤 Sprich jetzt..." : "Tippe oder sprich – der Tutor versteht beides."}
-          </p>
-        )}
       </div>
     </div>
   );
