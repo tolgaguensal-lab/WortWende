@@ -95,10 +95,7 @@ export async function buildTutorContext(
 
   // Get progress summary
   const progress = await prisma.userProgress.count({ where: { userId } });
-  const streakRecord = await prisma.streak.findFirst({
-    where: { userId },
-    orderBy: { startDate: "desc" },
-  });
+  const streakCount = await prisma.streak.count({ where: { userId } });
 
   return {
     userLevel,
@@ -119,7 +116,7 @@ export async function buildTutorContext(
     })),
     userProgress: {
       totalXp: profile?.totalXp ?? 0,
-      streak: streakRecord?.currentStreak ?? 0,
+      streak: streakCount,
       lessonsCompleted: progress,
     },
   };
