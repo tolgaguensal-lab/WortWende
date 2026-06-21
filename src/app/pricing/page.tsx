@@ -2,53 +2,209 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle2, ArrowRight, Sparkles, Shield, GraduationCap, Zap } from "lucide-react";
+import { CheckCircle2, ArrowRight, Bot, Infinity, Mic, Globe, BookOpen, Zap, Shield } from "lucide-react";
 import Link from "next/link";
+import { Animated, Stagger } from "@/components/shared/Animated";
 
-const tiers = [
+const plans = [
   {
-    level: "A1",
-    name: "Anfanger",
-    price: "Kostenlos",
-    description: "Grundlagen fur absolute Anfanger",
-    features: ["Sich vorstellen", "Zahlen & Uhrzeit", "Familie & Herkunft", "Einfache Satze", "Alltagssituationen", "500+ Vokabeln", "15 Grammatikthemen"],
+    name: "Kostenlos",
+    price: "0 &euro;",
+    period: "f&uuml;r immer",
+    description: "Perfekt zum Reinschnuppern",
+    cta: "Kostenlos starten",
+    href: "/register",
     popular: false,
-    color: "emerald",
+    features: [
+      { text: "KI-Tutor: 10 Sessions/Tag", included: true },
+      { text: "Alle CEFR-Level A1&ndash;C1", included: true },
+      { text: "10 Muttersprachen", included: true },
+      { text: "Vokabeltrainer + Grammatik", included: true },
+      { text: "Sprach-Eingabe (Mikrofon)", included: false },
+      { text: "Unbegrenzte KI-Sessions", included: false },
+      { text: "Offline-Modus", included: false },
+      { text: "Grammatik-Pr&uuml;fung", included: false },
+    ],
+    color: "border-border",
   },
   {
-    level: "A2",
-    name: "Grundkenntnisse",
-    price: "14,99 €",
-    period: "einmalig",
-    description: "Alltagssituationen sicher bewaltigen",
-    features: ["Einkaufen & Restaurant", "Arzt & Gesundheit", "Wohnen & Vermieter", "Amt & Behorden", "Kurze Texte verstehen", "1000+ Vokabeln", "30 Grammatikthemen"],
-    popular: false,
-    color: "sky",
-  },
-  {
-    level: "B1",
-    name: "Fortgeschritten",
-    price: "24,99 €",
-    period: "einmalig",
-    description: "Selbstandig im Alltag und Beruf",
-    features: ["Arbeit & Bewerbung", "Meinung außern", "Briefe & E-Mails", "Prufungsvorbereitung", "Diskussionen fuhren", "2000+ Vokabeln", "45 Grammatikthemen"],
+    name: "Premium",
+    price: "7,99 &euro;",
+    period: "pro Monat",
+    description: "Alles freischalten &ndash; unbegrenzt lernen",
+    cta: "Premium starten",
+    href: "/register?plan=premium",
     popular: true,
-    color: "amber",
+    features: [
+      { text: "KI-Tutor: <strong>unbegrenzt</strong>", included: true },
+      { text: "Alle CEFR-Level A1&ndash;C1", included: true },
+      { text: "10 Muttersprachen", included: true },
+      { text: "Vokabeltrainer + Grammatik", included: true },
+      { text: "Sprach-Eingabe (Mikrofon)", included: true },
+      { text: "Grammatik-Pr&uuml;fung (LanguageTool)", included: true },
+      { text: "Offline-Modus", included: true },
+      { text: "Keine Werbung, kein Tracking", included: true },
+    ],
+    color: "border-accent",
   },
   {
-    level: "B2",
-    name: "Selbstandig",
-    price: "29,99 €",
-    period: "einmalig",
-    description: "Komplexe Kommunikation in Beruf & Gesellschaft",
-    features: ["Berufssprache", "Prasentationen", "Komplexe Texte", "Diskussionen & Argumentation", "Fachtexte verstehen", "4000+ Vokabeln", "60 Grammatikthemen"],
+    name: "Premium Jahres",
+    price: "59,99 &euro;",
+    period: "pro Jahr (4,99 &euro;/Monat)",
+    description: "38% sparen &ndash; unsere Empfehlung",
+    cta: "Jahresabo starten",
+    href: "/register?plan=premium-yearly",
     popular: false,
-    color: "purple",
+    features: [
+      { text: "KI-Tutor: <strong>unbegrenzt</strong>", included: true },
+      { text: "Alle CEFR-Level A1&ndash;C1", included: true },
+      { text: "10 Muttersprachen", included: true },
+      { text: "Vokabeltrainer + Grammatik", included: true },
+      { text: "Sprach-Eingabe (Mikrofon)", included: true },
+      { text: "Grammatik-Pr&uuml;fung (LanguageTool)", included: true },
+      { text: "Offline-Modus", included: true },
+      { text: "38% g&uuml;nstiger als Monatsabo", included: true },
+    ],
+    color: "border-primary",
   },
-  {
-    level: "C1",
-    name: "Kompetent",
-    price: "34,99 €",
+];
+
+const competitors = [
+  { name: "Duolingo Max (mit KI)", price: "29,99 &euro;/Monat", ai: "GPT-4", note: "Nur Englisch/Spanisch" },
+  { name: "Babbel Live", price: "49,99 &euro;/Monat", ai: "Keine KI", note: "Live-Tutoren, teuer" },
+  { name: "Busuu Premium", price: "9,99 &euro;/Monat", ai: "Keine KI", note: "Community-Korrekturen" },
+  { name: "Wortwende Premium", price: "7,99 &euro;/Monat", ai: "DeepSeek V4", note: "KI-Tutor 24/7, 10 Sprachen" },
+];
+
+export default function PricingPage() {
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero */}
+      <section className="max-w-7xl mx-auto px-6 pt-16 pb-10 text-center">
+        <Animated type="fadeUp">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 text-accent text-xs font-extrabold uppercase tracking-wider mb-6">
+            <Bot size={14} />Transparente Preise
+          </div>
+          <h1 className="text-4xl md:text-6xl font-display font-extrabold text-foreground mb-4">
+            Einfach. Fair. <span className="text-accent">G&uuml;nstig.</span>
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-4">
+            Ein Preis. Alle Features. Kein Kleingedrucktes.
+          </p>
+        </Animated>
+      </section>
+
+      {/* Plans */}
+      <section className="max-w-5xl mx-auto px-6 pb-16">
+        <Stagger className="grid md:grid-cols-3 gap-6">
+          {plans.map((plan) => (
+            <Card key={plan.name} className={`relative rounded-[28px] overflow-hidden border-2 ${plan.color} ${plan.popular ? "shadow-xl shadow-accent/10 scale-[1.03]" : ""}`}>
+              {plan.popular && (
+                <div className="absolute top-0 right-0 bg-accent text-white text-xs font-extrabold px-4 py-1.5 rounded-bl-2xl uppercase tracking-wider">
+                  Beliebteste Wahl
+                </div>
+              )}
+              <div className="p-7">
+                <h3 className="text-lg font-display font-bold text-foreground mb-1">{plan.name}</h3>
+                <p className="text-xs text-muted-foreground mb-4">{plan.description}</p>
+                <div className="mb-1">
+                  <span className="text-4xl font-display font-extrabold text-foreground" dangerouslySetInnerHTML={{ __html: plan.price }} />
+                </div>
+                <p className="text-xs text-muted-foreground mb-6">{plan.period}</p>
+                <Link href={plan.href}>
+                  <Button
+                    variant={plan.popular ? "accent" : "outline"}
+                    className="w-full mb-6 rounded-xl font-bold"
+                  >
+                    {plan.cta} <ArrowRight size={15} className="ml-2" />
+                  </Button>
+                </Link>
+                <ul className="space-y-2.5">
+                  {plan.features.map((f, i) => (
+                    <li key={i} className={`flex items-start gap-2 text-xs ${f.included ? "text-foreground" : "text-muted-foreground/40 line-through"}`}>
+                      <CheckCircle2 size={12} className={`shrink-0 mt-0.5 ${f.included ? "text-success" : "text-border"}`} />
+                      <span dangerouslySetInnerHTML={{ __html: f.text }} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Card>
+          ))}
+        </Stagger>
+      </section>
+
+      {/* Comparison Table */}
+      <section className="bg-card-highlight py-16">
+        <div className="max-w-4xl mx-auto px-6">
+          <Animated type="fadeUp" className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-display font-extrabold text-foreground mb-2">Im Vergleich zur Konkurrenz</h2>
+            <p className="text-muted-foreground text-sm">KI-Tutor zum besten Preis.</p>
+          </Animated>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left py-3 px-4 font-semibold text-foreground">Anbieter</th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground">Preis</th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground">KI-Tutor</th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground">Besonderheit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {competitors.map((c, i) => (
+                  <tr key={i} className={`border-b border-border/50 ${c.name.startsWith("Wortwende") ? "bg-accent/5 font-semibold" : ""}`}>
+                    <td className="py-3 px-4 text-foreground">{c.name}</td>
+                    <td className="py-3 px-4">{c.price}</td>
+                    <td className="py-3 px-4">{c.ai}</td>
+                    <td className="py-3 px-4 text-muted-foreground">{c.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <Animated type="fadeUp" className="text-center mb-10">
+          <h2 className="text-2xl md:text-3xl font-display font-extrabold text-foreground mb-2">HÃ¤ufige Fragen</h2>
+        </Animated>
+        <div className="space-y-4">
+          {[
+            { q: "Warum ist Wortwende so gÃ¼nstig?", a: "Wir betreiben unsere eigenen Server (ZimaOS), nutzen Open-Source-Tools (LanguageTool, LibreTranslate) und zahlen nur die DeepSeek-API. Keine Investoren, keine Marketing-Budgets â€“ der Preis geht direkt an dich." },
+            { q: "Was passiert nach der kostenlosen Phase?", a: "Nichts. Der kostenlose Tarif bleibt fÃ¼r immer kostenlos. Du kannst jederzeit upgraden, aber wir drÃ¤ngen dich nicht." },
+            { q: "Kann ich jederzeit kÃ¼ndigen?", a: "Ja. Monatsabo: jederzeit kÃ¼ndbar. Jahresabo: 14 Tage Widerrufsrecht. Keine versteckten Kosten." },
+            { q: "Funktioniert der KI-Tutor auch offline?", a: "Im Premium-Tarif ja. Vokabeln, Grammatik und gespeicherte Lektionen sind offline verfÃ¼gbar. Der KI-Tutor braucht Internet." },
+            { q: "Welche Sprachen unterstÃ¼tzt der KI-Tutor?", a: "Der Tutor spricht Deutsch als Zielsprache. Du kannst in 10 Sprachen mit ihm kommunizieren: TÃ¼rkisch, Arabisch, Russisch, Polnisch, RumÃ¤nisch, Ukrainisch, Albanisch, Kurdisch, Italienisch und Englisch." },
+          ].map((faq, i) => (
+            <Card key={i} className="p-5 rounded-2xl border-border">
+              <h3 className="font-semibold text-foreground text-sm mb-1">{faq.q}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.a }} />
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Bottom CTA */}
+      <section className="bg-primary py-16 text-center">
+        <div className="max-w-2xl mx-auto px-6">
+          <h2 className="text-2xl md:text-3xl font-display font-extrabold text-white mb-3">Bereit f&uuml;r deinen KI-Tutor?</h2>
+          <p className="text-white/60 mb-8">Starte kostenlos. Upgrade, wenn es dir gef&auml;llt. Kein Risiko.</p>
+          <Link href="/register"><Button variant="accent" size="lg" className="text-base px-8 py-6 h-auto font-extrabold"><Bot size={18} className="mr-2" />Kostenlos starten <ArrowRight size={16} className="ml-2" /></Button></Link>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-border py-8 px-6">
+        <div className="max-w-7xl mx-auto text-center text-xs text-muted-foreground">
+          Alle Preise inkl. MwSt. &middot; 14 Tage Widerrufsrecht &middot; <Link href="/agb" className="underline">AGB</Link> &middot; <Link href="/datenschutz" className="underline">Datenschutz</Link>
+        </div>
+      </footer>
+    </div>
+  );
+}
+    price: "34,99 â‚¬",
     period: "einmalig",
     description: "Akademisches und berufliches Expertenniveau",
     features: ["Akademische Sprache", "Formelle Kommunikation", "Prasentationen", "Komplexe Grammatik", "Fachsprache", "8000+ Vokabeln", "70+ Grammatikthemen"],
@@ -57,112 +213,6 @@ const tiers = [
   },
 ];
 
-const bundlePrice = "79,99 €";
-const bundleSaved = "25,00 €";
+const bundlePrice = "79,99 â‚¬";
+const bundleSaved = "25,00 â‚¬";
 
-export default function PricingPage() {
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-6 py-16 md:py-24">
-        <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 text-primary/60 text-xs font-medium mb-6">
-            <Sparkles size={12} className="text-primary" />
-            GER/CEFR Niveaus
-          </div>
-          <h1 className="text-3xl md:text-5xl font-display font-bold text-foreground mb-4">
-            Wahle dein Sprachniveau
-          </h1>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Jedes Niveau orientiert sich am Gemeinsamen Europaischen Referenzrahmen (GER/CEFR). 
-            Einmal kaufen, dauerhaft lernen.
-          </p>
-        </div>
-
-        {/* Bundle Card */}
-        <div className="max-w-3xl mx-auto mb-16">
-          <Card className="card-premium overflow-hidden border-primary/30 bg-gradient-to-r from-primary/5 to-primary/[0.02]">
-            <div className="flex flex-col md:flex-row items-center justify-between p-6 md:p-8 gap-4">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <GraduationCap size={28} className="text-primary" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="badge-premium bg-primary/10 text-primary border-primary/20">Empfohlen</span>
-                    <span className="text-xs text-muted-foreground">Besonders gunstig</span>
-                  </div>
-                  <h2 className="text-xl font-display font-bold text-foreground">Komplettpaket A1 – C1</h2>
-                  <p className="text-sm text-muted-foreground mt-0.5">Alle 5 Niveaus in einem Paket – sparst {bundleSaved}</p>
-                </div>
-              </div>
-              <div className="text-center md:text-right shrink-0">
-                <div className="text-3xl font-display font-bold text-foreground">{bundlePrice}</div>
-                <div className="text-xs text-muted-foreground line-through mb-3">{Number(bundlePrice.replace(",",".").replace(" €","")) + Number(bundleSaved.replace(",",".").replace(" €",""))} €</div>
-                <Button className="w-full md:w-auto shadow-lg shadow-primary/20 group">
-                  Alle freischalten <ArrowRight size={16} className="ml-2 group-hover:translate-x-0.5 transition-transform" />
-                </Button>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Individual Level Cards */}
-        <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {tiers.map((tier) => (
-            <Card key={tier.level} className={`card-premium p-5 flex flex-col ${tier.popular ? "ring-2 ring-amber-400/40" : ""}`}>
-              {tier.popular && (
-                <div className="text-center mb-3">
-                  <span className="badge-premium bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800 text-xs">
-                    Beliebt
-                  </span>
-                </div>
-              )}
-              <div className="text-center mb-4">
-                <div className={`text-3xl font-display font-bold text-${tier.color}-600 dark:text-${tier.color}-400 mb-1`}>{tier.level}</div>
-                <div className="text-sm font-semibold text-foreground">{tier.name}</div>
-                <div className="text-xs text-muted-foreground mt-0.5">{tier.description}</div>
-              </div>
-              <div className="text-center mb-4">
-                <div className="text-2xl font-display font-bold text-foreground">{tier.price}</div>
-                {tier.period && <div className="text-[10px] text-muted-foreground">{tier.period}</div>}
-              </div>
-              <ul className="space-y-2 mb-5 flex-1">
-                {tier.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-xs text-muted-foreground">
-                    <CheckCircle2 size={12} className="text-success shrink-0 mt-0.5" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Button
-                variant={tier.level === "A1" ? "outline" : "primary"}
-                className={`w-full ${tier.level === "A1" ? "" : "shadow-lg shadow-primary/20"}`}
-              >
-                {tier.level === "A1" ? "Kostenlos starten" : "Freischalten"}
-                {tier.level !== "A1" && <ArrowRight size={14} className="ml-1" />}
-              </Button>
-            </Card>
-          ))}
-        </div>
-
-        {/* FAQ Section */}
-        <div className="max-w-2xl mx-auto mt-20 pt-12 border-t border-border/60">
-          <h2 className="text-2xl font-display font-bold text-foreground text-center mb-8">Haufige Fragen</h2>
-          <div className="space-y-4">
-            {[
-              ["Muss ich jedes Niveau einzeln kaufen?", "Nein, mit dem Komplettpaket sparst du und erhaltst alle Niveaus auf einmal."],
-              ["Wie lange habe ich Zugriff?", "Nach dem Kauf hast du unbegrenzten Zugriff auf das Niveau – ohne Abo-Pflicht."],
-              ["Kann ich spater upgraden?", "Ja, du kannst jederzeit weitere Niveaus freischalten oder auf das Komplettpaket upgraden."],
-              ["Ist A1 wirklich kostenlos?", "Ja, das A1-Niveau ist komplett kostenlos. Du kannst es ohne Einschrankung nutzen."],
-            ].map(([q, a], i) => (
-              <details key={i} className="group p-4 rounded-xl border border-border/60 bg-card">
-                <summary className="font-medium text-foreground text-sm cursor-pointer">{q}</summary>
-                <p className="text-muted-foreground text-sm mt-2">{a}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
