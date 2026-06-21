@@ -51,7 +51,8 @@ export async function POST(req: NextRequest) {
   }
 
   // Build RAG context from user's last message
-  const lastUserMessage = [...body.messages].reverse().find(m => m.role === "user");
+  const messages = body.messages;
+  const lastUserMessage = [...messages].reverse().find(m => m.role === "user");
   const query = lastUserMessage?.content ?? "";
   const context = await buildTutorContext(session.user.id, query);
 
@@ -60,12 +61,12 @@ export async function POST(req: NextRequest) {
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        const messages = body.messages.map(m => ({
+        const chatMessages = messages.map(m => ({
           role: m.role as "user" | "assistant" | "system",
           content: m.content,
         }));
 
-        for await (const chunk of streamTutorChat(messages, context, apiKey)) {
+        for await (const chunk of streamTutorChat(chatMessages, context, apiKey)) {
           controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: chunk })}\n\n`));
         }
         controller.enqueue(encoder.encode("data: [DONE]\n\n"));
