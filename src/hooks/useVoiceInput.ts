@@ -27,7 +27,7 @@ export function useVoiceInput({
   const [transcript, setTranscript] = useState("");
   const [interimTranscript, setInterimTranscript] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<any>(null);
 
   // Check browser support
   const supported =
@@ -45,7 +45,7 @@ export function useVoiceInput({
     recognition.interimResults = interimResults;
     recognition.maxAlternatives = 1;
 
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
+    recognition.onresult = (event: any) => {
       let final = "";
       let interim = "";
 
