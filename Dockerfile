@@ -14,7 +14,6 @@ FROM node:22-bookworm AS builder
 
 ARG APP_VERSION=0.0.0
 ENV NEXT_PUBLIC_APP_VERSION=${APP_VERSION}
-ENV NODE_ENV=production
 
 WORKDIR /app
 
@@ -26,8 +25,8 @@ COPY . .
 # Prisma Client generieren
 RUN npx prisma generate
 
-# Next.js Standalone-Build
-RUN npm run build
+# Next.js Standalone-Build (NODE_ENV=production erst HIER)
+RUN NODE_ENV=production npm run build
 
 # ---- Production Stage ----
 FROM node:22-bookworm-slim AS runner
