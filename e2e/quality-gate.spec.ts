@@ -45,7 +45,7 @@ test.describe("Quality Gate E2E", () => {
   test("[PRICING] ladt fehlerfrei", async ({ page }) => {
     const e: string[] = []; page.on("pageerror", err => e.push(err.message));
     await page.goto(`${BASE}/pricing`);
-    await expect(page.locator("text=Komplettpaket A1")).toBeVisible();
+    await expect(page.locator("text=Premium starten")).toBeVisible();
     expect(e).toHaveLength(0);
   });
 
