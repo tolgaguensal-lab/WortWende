@@ -1,6 +1,6 @@
 {
-  "name": "WortHeld – KI-Tutor für Deutsch",
-  "short_name": "WortHeld",
+  "name": "Wortwende – KI-Tutor für Deutsch",
+  "short_name": "Wortwende",
   "description": "Deutsch lernen mit KI-Tutor. 24/7 persönlich. Grammatik, Vokabeln, Aussprache – von A1 bis C1. BAMF-konform, DTZ-Vorbereitung, 10 Muttersprachen.",
   "start_url": "/dashboard",
   "scope": "/",

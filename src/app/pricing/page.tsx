@@ -93,7 +93,7 @@ const competitors = [
   { name: "Duolingo Max (mit KI)", price: "29,99 &euro;/Monat", ai: "GPT-5", note: "Nur Englisch/Spanisch" },
   { name: "Babbel Live", price: "49,99 &euro;/Monat", ai: "Keine KI", note: "Live-Tutoren, teuer" },
   { name: "Busuu Premium", price: "9,99 &euro;/Monat", ai: "Keine KI", note: "Community-Korrekturen" },
-  { name: "WortHeld Premium", price: "12,99 &euro;/Monat", ai: "DeepSeek V4", note: "KI-Tutor 24/7, 10 Sprachen" },
+  { name: "Wortwende Premium", price: "12,99 &euro;/Monat", ai: "DeepSeek V4", note: "KI-Tutor 24/7, 10 Sprachen" },
 ];
 
 export default function PricingPage() {
@@ -172,7 +172,7 @@ export default function PricingPage() {
               </thead>
               <tbody>
                 {competitors.map((c, i) => (
-                  <tr key={i} className={`border-b border-border/50 ${c.name.startsWith("WortHeld") ? "bg-accent/5 font-semibold" : ""}`}>
+                  <tr key={i} className={`border-b border-border/50 ${c.name.startsWith("Wortwende") ? "bg-accent/5 font-semibold" : ""}`}>
                     <td className="py-3 px-4 text-foreground">{c.name}</td>
                     <td className="py-3 px-4">{c.price}</td>
                     <td className="py-3 px-4">{c.ai}</td>
@@ -192,7 +192,7 @@ export default function PricingPage() {
         </Animated>
         <div className="space-y-4">
           {[
-            { q: "Warum ist WortHeld so g&uuml;nstig?", a: "Wir betreiben eigene Server (ZimaOS), nutzen Open-Source-Tools (LanguageTool, LibreTranslate) und die DeepSeek-API – eine der g&uuml;nstigsten KI-APIs der Welt. Keine Investoren, keine Marketing-Budgets – der Preis geht direkt an dich." },
+            { q: "Warum ist Wortwende so g&uuml;nstig?", a: "Wir betreiben eigene Server (ZimaOS), nutzen Open-Source-Tools (LanguageTool, LibreTranslate) und die DeepSeek-API – eine der g&uuml;nstigsten KI-APIs der Welt. Keine Investoren, keine Marketing-Budgets – der Preis geht direkt an dich." },
             { q: "Was passiert nach der kostenlosen Phase?", a: "Nichts. Der kostenlose Tarif bleibt f&uuml;r immer kostenlos. Du kannst jederzeit upgraden, aber wir dr&auml;ngen dich nicht." },
             { q: "Kann ich jederzeit k&uuml;ndigen?", a: "Ja. Monatsabo: jederzeit k&uuml;ndbar. Jahresabo: 14 Tage Widerrufsrecht. Keine versteckten Kosten." },
             { q: "Funktioniert der KI-Tutor auch offline?", a: "Im Premium-Tarif ja. Vokabeln, Grammatik und gespeicherte Lektionen sind offline verf&uuml;gbar. Der KI-Tutor braucht Internet." },

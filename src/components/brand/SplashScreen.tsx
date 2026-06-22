@@ -51,7 +51,7 @@ export function SplashScreen({ onFinish, duration = 2500 }: SplashScreenProps) {
 
       {/* Brand name */}
       <h1 className="font-display font-extrabold text-4xl text-[#FFF5E6] mb-3 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-        WortHeld
+        Wortwende
       </h1>
 
       {/* Slogan */}

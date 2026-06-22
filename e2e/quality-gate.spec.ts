@@ -33,7 +33,7 @@ test.describe("Quality Gate E2E", () => {
   test("[ONBOARDING] ladt fehlerfrei", async ({ page }) => {
     const e: string[] = []; page.on("pageerror", err => e.push(err.message));
     await page.goto(`${BASE}/onboarding`);
-    await expect(page.locator("text=Willkommen bei WortHeld")).toBeVisible();
+    await expect(page.locator("text=Willkommen bei Wortwende")).toBeVisible();
     expect(e).toHaveLength(0);
   });
   test("[PLACEMENT] ladt fehlerfrei", async ({ page }) => {

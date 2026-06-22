@@ -3,11 +3,11 @@ import "./globals.css";
 import { Providers } from "@/components/shared/Providers";
 
 export const metadata: Metadata = {
-  title: "WortHeld — Deutsch lernen, bis es Klick macht",
+  title: "Wortwende — Deutsch lernen, bis es Klick macht",
   description: "Von A1 bis C1: echte Sprache für Alltag, Beruf, Integration und Prüfung. BAMF-konformer Deutschkurs.",
   manifest: "/manifest.json",
   icons: { icon: "/logo.png" },
-  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "WortHeld" },
+  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Wortwende" },
 };
 
 export const viewport: Viewport = {

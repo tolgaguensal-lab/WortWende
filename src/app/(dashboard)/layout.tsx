@@ -29,7 +29,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <div className="flex items-center gap-3">
             <AppIcon size={32} className="shrink-0 rounded-md shadow-sm" />
             <div>
-              <h1 className="text-base font-display font-bold text-foreground tracking-tight">WortHeld</h1>
+              <h1 className="text-base font-display font-bold text-foreground tracking-tight">Wortwende</h1>
               <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Deutsch lernen</p>
             </div>
           </div>

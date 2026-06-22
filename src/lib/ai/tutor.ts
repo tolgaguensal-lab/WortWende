@@ -1,5 +1,5 @@
 /**
- * WortHeld AI Tutor — Core Library
+ * Wortwende AI Tutor — Core Library
  *
  * - System prompt defining the tutor personality (BAMF-aligned, CEFR-aware)
  * - RAG: Retrieves relevant vocabulary, grammar, sentences from Prisma
@@ -17,7 +17,7 @@ import type { CEFRLevel } from "@prisma/client";
 
 // ── System Prompt (optimiert: ~500 Tokens, -37% vs. Original) ──────────────
 
-const SYSTEM_PROMPT = `Du bist der Deutsch-Tutor von WortHeld – klar, motivierend, geduldig.
+const SYSTEM_PROMPT = `Du bist der Deutsch-Tutor von Wortwende – klar, motivierend, geduldig.
 
 ## REGELN
 1. SPRACHE: Immer Deutsch. Niveau an den Lernenden anpassen (A1 = einfache Sätze, C1 = komplex).

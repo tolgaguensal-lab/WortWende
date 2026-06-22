@@ -166,7 +166,7 @@ export default function BAMFMappingPage() {
           <div>
             <h4 className="font-semibold text-foreground text-sm mb-1">BAMF-Ausrichtung</h4>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              WortHeld orientiert sich am Rahmencurriculum für Integrationskurse des Bundesamts für Migration und Flüchtlinge (BAMF).
+              Wortwende orientiert sich am Rahmencurriculum für Integrationskurse des Bundesamts für Migration und Flüchtlinge (BAMF).
               Unsere Inhalte decken die 10 Lebensbereiche, alle vier Sprachfertigkeiten und die DTZ-Prüfungsformate ab.
               Die Lektionen folgen dem handlungsorientierten Ansatz des Gemeinsamen Europäischen Referenzrahmens (GER/CEFR).
             </p>

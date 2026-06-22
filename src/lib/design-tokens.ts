@@ -15,7 +15,7 @@ export const fonts = { display: "'Nunito', 'Nunito Sans', system-ui, sans-serif"
 export const shadows = { card: "0 18px 45px rgba(13,43,69,0.08)", cardHover: "0 24px 55px rgba(13,43,69,0.12)" } as const;
 
 export const brand = {
-  name: "WortHeld",
+  name: "Wortwende",
   slogan: "Deutsch lernen, bis es Klick macht.",
   subclaim: "Von A1 bis C1: echte Sprache für Alltag, Beruf, Integration und Prüfung.",
   heroText: "Lerne Deutsch Schritt für Schritt – mit klaren Lektionen, echten Alltagssituationen und motivierenden Klick-Momenten.",

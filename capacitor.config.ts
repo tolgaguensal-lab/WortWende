@@ -4,7 +4,7 @@ const isProd = process.env.NODE_ENV === "production";
 
 const config: CapacitorConfig = {
   appId: "de.guenlab.wortwende",
-  appName: "WortHeld",
+  appName: "Wortwende",
   webDir: "public",
   server: {
     url: isProd

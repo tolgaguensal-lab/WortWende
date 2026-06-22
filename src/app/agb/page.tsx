@@ -6,10 +6,10 @@ export default function AGBPage() {
         <h1 className="text-4xl font-display font-bold mb-8">Allgemeine Geschäftsbedingungen</h1>
         <div className="space-y-6 text-muted-foreground">
           <h2 className="text-xl font-display font-semibold text-foreground">§ 1 Geltungsbereich</h2>
-          <p>Diese AGB gelten für die Nutzung der Lernplattform WortHeld. Durch die Nutzung unserer Dienste erklären Sie sich mit diesen Bedingungen einverstanden.</p>
+          <p>Diese AGB gelten für die Nutzung der Lernplattform Wortwende. Durch die Nutzung unserer Dienste erklären Sie sich mit diesen Bedingungen einverstanden.</p>
 
           <h2 className="text-xl font-display font-semibold text-foreground">§ 2 Leistungsbeschreibung</h2>
-          <p>WortHeld bietet eine interaktive Lernplattform zum Erlernen der deutschen Sprache von Niveau A1 bis C1. Der Service umfasst Lektionen, Übungen, Vokabeltrainer und Fortschrittsverfolgung.</p>
+          <p>Wortwende bietet eine interaktive Lernplattform zum Erlernen der deutschen Sprache von Niveau A1 bis C1. Der Service umfasst Lektionen, Übungen, Vokabeltrainer und Fortschrittsverfolgung.</p>
 
           <h2 className="text-xl font-display font-semibold text-foreground">§ 3 Registrierung</h2>
           <p>Für die Nutzung bestimmter Funktionen ist eine Registrierung erforderlich. Sie sind für die Vertraulichkeit Ihrer Zugangsdaten verantwortlich.</p>
