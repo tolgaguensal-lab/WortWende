@@ -25,6 +25,10 @@ import * as fs from "fs";
 import * as path from "path";
 import { Command } from "commander";
 
+// Lade .env für DEEPSEEK_API_KEY (optional – Tatoeba funktioniert ohne)
+try { require("dotenv").config(); } catch {}
+try { require("dotenv").config({ path: ".env.local" }); } catch {}
+
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 type CEFRLevel = "A1" | "A2" | "B1" | "B2" | "C1";
