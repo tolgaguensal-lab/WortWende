@@ -1,0 +1,135 @@
+name: shadcn Component Update Check
+
+on:
+  schedule:
+    # Jeden Montag um 8:00 UTC
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+    inputs:
+      auto_create_pr:
+        description: "Automatically create PR with updates?"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  check-updates:
+    name: Check shadcn component updates
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run shadcn diff
+        id: diff
+        run: |
+          echo "🔍 Checking for shadcn component updates..."
+          DIFF_OUTPUT=$(npx shadcn@latest diff 2>&1) || true
+          echo "$DIFF_OUTPUT"
+
+          # Prüfe ob es Updates gibt
+          if echo "$DIFF_OUTPUT" | grep -q "updates available"; then
+            echo "updates_available=true" >> $GITHUB_OUTPUT
+            # Extrahiere Komponentennamen
+            COMPONENTS=$(echo "$DIFF_OUTPUT" | grep "^\s*- " | sed 's/^\s*- //' | tr '\n' ', ' | sed 's/, $//')
+            echo "components=$COMPONENTS" >> $GITHUB_OUTPUT
+            echo "diff_output<<EOF" >> $GITHUB_OUTPUT
+            echo "$DIFF_OUTPUT" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "updates_available=false" >> $GITHUB_OUTPUT
+            echo "✅ All shadcn components are up to date."
+          fi
+
+      - name: Create Issue for available updates
+        if: steps.diff.outputs.updates_available == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const components = "${{ steps.diff.outputs.components }}";
+            const diffOutput = `${{ steps.diff.outputs.diff_output }}`;
+
+            // Check if an open issue already exists
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              labels: ["shadcn-update", "automation"],
+            });
+
+            const existingIssue = issues.find(i => i.title.includes("shadcn component updates"));
+
+            if (existingIssue) {
+              // Update existing issue
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `🔄 **Neuer Check** (${new Date().toISOString().split('T')[0]})\n\nFolgende Komponenten haben Updates:\n\n\`\`\`\n${diffOutput}\n\`\`\`\n\n**Update-Befehl:**\n\`\`\`bash\nnpx shadcn@latest add --all --overwrite\n\`\`\``,
+              });
+            } else {
+              // Create new issue
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: "⬆️ shadcn component updates available",
+                labels: ["shadcn-update", "automation"],
+                body: `## 📦 shadcn Component Updates Available
+
+        Folgende Komponenten haben Updates (${new Date().toISOString().split('T')[0]}):
+
+        \`\`\`
+        ${diffOutput}
+        \`\`\`
+
+        ### 🔧 Manuelles Update
+        \`\`\`bash
+        # Preview was sich ändert:
+        npx shadcn@latest add --all --dry-run
+
+        # Für eine bestimmte Komponente:
+        npx shadcn@latest add button --diff
+
+        # Alle Komponenten updaten:
+        npx shadcn@latest add --all --overwrite
+        \`\`\`
+
+        ### ⚠️ Vor dem Update
+        - [ ] \`npm run build\` prüfen
+        - [ ] Visuelle Regression testen
+        - [ ] Breaking Changes in Komponenten-Diffs reviewen
+        - [ ] \`npm run audit\` ausführen
+        `,
+              });
+            }
+
+      - name: Auto-create PR (if enabled)
+        if: steps.diff.outputs.updates_available == 'true' && inputs.auto_create_pr
+        run: |
+          BRANCH="shadcn-update-$(date +%Y%m%d)"
+          git checkout -b "$BRANCH"
+          npx shadcn@latest add --all --overwrite
+          git add -A
+          git commit -m "chore: update shadcn components $(date +%Y-%m-%d)" || echo "No changes to commit"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "⬆️ shadcn component updates ($(date +%Y-%m-%d))" \
+            --body "Automatisch erstellter PR mit shadcn component updates.\n\n**Vor Merge:**\n- [ ] Build check\n- [ ] Visuelle Regression\n- [ ] Quality Audit" \
+            --base main \
+            --head "$BRANCH"
+        env:
+          GH_TOKEN: ${{ github.token }}

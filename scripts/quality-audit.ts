@@ -572,6 +572,35 @@ function checkMobileLayout(): Violation[] {
   return violations;
 }
 
+// ─── KATEGORIE 10: SHADCN UI UPDATES ─────────────────────────
+function checkShadcnUpdates(): Violation[] {
+  const violations: Violation[] = [];
+  try {
+    const { execSync } = require("child_process");
+    const output = execSync("npx shadcn@latest diff", {
+      cwd: process.cwd(),
+      timeout: 30000,
+      encoding: "utf-8",
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+
+    if (output.includes("updates available") || output.includes("have updates")) {
+      // Zähle die Zeilen mit Komponenten
+      const componentLines = output.split("\n").filter(l => /^\s*- /.test(l));
+      violations.push({
+        category: "SHADCN-UI",
+        severity: "warning",
+        file: "components.json",
+        line: 0,
+        message: `${componentLines.length} shadcn-Komponente(n) haben Updates. Führe 'npx shadcn@latest add --all --overwrite' aus.\n${componentLines.map(l => "     " + l.trim()).join("\n")}`,
+      });
+    }
+  } catch {
+    // shadcn CLI nicht verfügbar oder Fehler – ignorieren
+  }
+  return violations;
+}
+
 // ─── HAUPTLOGIK ──────────────────────────────────────────────
 function main() {
   console.log("═".repeat(66));
@@ -589,6 +618,7 @@ function main() {
     { name: "LINKS (Broken Internal Links)", fn: checkLinks },
     { name: "HEADING-HIERARCHIE", fn: checkHeadingHierarchy },
     { name: "MOBILE LAYOUT (Responsive)", fn: checkMobileLayout },
+    { name: "SHADCN UI (Component Updates)", fn: checkShadcnUpdates },
   ];
 
   let totalErrors = 0;
