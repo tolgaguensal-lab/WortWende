@@ -8,6 +8,8 @@ on:
       - "capacitor.config.ts"
       - "package.json"
       - "public/**"
+      - "src/**"
+      - ".github/workflows/build-ios.yml"
   workflow_dispatch:
 
 jobs:

@@ -9,6 +9,7 @@ on:
       - "package.json"
       - "public/**"
       - "src/**"
+      - ".github/workflows/build-android.yml"
   workflow_dispatch:
 
 jobs:
