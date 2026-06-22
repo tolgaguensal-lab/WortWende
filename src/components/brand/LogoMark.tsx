@@ -1,10 +1,10 @@
 /**
- * Wortwende Logo — Icon only (stylized W).
+ * WortHeld Logo — Icon only (stylized W).
  * Left: Deep Blue, Right: Coral, Arrow: Coral, Dots: Amber.
  */
 export function LogoMark({ size = 40, className = "" }: { size?: number; className?: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 80 80" fill="none" className={className} aria-label="Wortwende">
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none" className={className} aria-label="WortHeld">
       {/* Left W stroke — Deep Blue */}
       <path d="M18 22 L28 58 L40 38 L40 58" stroke="#0D2B45" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" fill="none" />
       {/* Right W stroke — Coral */}
@@ -20,21 +20,21 @@ export function LogoMark({ size = 40, className = "" }: { size?: number; classNa
   );
 }
 
-/** Wortwende Logo — Icon + Wordmark */
+/** WortHeld Logo — Icon + Wordmark */
 export function LogoFull({ size = 40, className = "" }: { size?: number; className?: string }) {
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       <LogoMark size={size} />
-      <span className="font-display font-extrabold text-2xl text-primary tracking-tight">Wortwende</span>
+      <span className="font-display font-extrabold text-2xl text-primary tracking-tight">WortHeld</span>
     </div>
   );
 }
 
-/** Wortwende App Icon — square, rounded, on dark bg */
+/** WortHeld App Icon — square, rounded, on dark bg */
 export function AppIcon({ size = 128, className = "" }: { size?: number; className?: string }) {
   const r = size * 0.22;
   return (
-    <svg width={size} height={size} viewBox="0 0 128 128" fill="none" className={className} aria-label="Wortwende App">
+    <svg width={size} height={size} viewBox="0 0 128 128" fill="none" className={className} aria-label="WortHeld App">
       <rect width="128" height="128" rx={r} fill="#0D2B45" />
       {/* Left W — White/Cream */}
       <path d="M28 36 L44 92 L62 62 L62 92" stroke="#FFF5E6" strokeWidth="11" strokeLinecap="round" strokeLinejoin="round" fill="none" />

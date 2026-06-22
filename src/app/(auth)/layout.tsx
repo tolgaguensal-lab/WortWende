@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <div className="flex justify-center mb-4">
             <AppIcon size={64} />
           </div>
-          <h1 className="text-3xl font-display font-bold text-primary">Wortwende</h1>
+          <h1 className="text-3xl font-display font-bold text-primary">WortHeld</h1>
           <p className="text-muted-foreground mt-2">Deutsch spielerisch lernen</p>
         </div>
         {children}

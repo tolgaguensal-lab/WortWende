@@ -166,7 +166,7 @@ export function AIChat() {
         </div>
         <div className="flex-1">
           <h2 className="text-sm font-semibold text-foreground">
-            Wortwende Tutor {sessionTopic && <span className="text-accent">Â· {sessionTopic}</span>}
+            WortHeld Tutor {sessionTopic && <span className="text-accent">Â· {sessionTopic}</span>}
           </h2>
           <p className="text-xs text-muted-foreground">
             {loading ? "Schreibt..." : mode === "session" ? `Session Â· +${sessionXp} XP` : "Online Â· KI-gest&uuml;tzt"}

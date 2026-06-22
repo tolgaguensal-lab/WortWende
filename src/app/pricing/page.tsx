@@ -93,7 +93,7 @@ const competitors = [
   { name: "Duolingo Max (mit KI)", price: "29,99 &euro;/Monat", ai: "GPT-5", note: "Nur Englisch/Spanisch" },
   { name: "Babbel Live", price: "49,99 &euro;/Monat", ai: "Keine KI", note: "Live-Tutoren, teuer" },
   { name: "Busuu Premium", price: "9,99 &euro;/Monat", ai: "Keine KI", note: "Community-Korrekturen" },
-  { name: "Wortwende Premium", price: "12,99 &euro;/Monat", ai: "DeepSeek V4", note: "KI-Tutor 24/7, 10 Sprachen" },
+  { name: "WortHeld Premium", price: "12,99 &euro;/Monat", ai: "DeepSeek V4", note: "KI-Tutor 24/7, 10 Sprachen" },
 ];
 
 export default function PricingPage() {
@@ -224,15 +224,3 @@ export default function PricingPage() {
     </div>
   );
 }
-    price: "34,99 â‚¬",
-    period: "einmalig",
-    description: "Akademisches und berufliches Expertenniveau",
-    features: ["Akademische Sprache", "Formelle Kommunikation", "Prasentationen", "Komplexe Grammatik", "Fachsprache", "8000+ Vokabeln", "70+ Grammatikthemen"],
-    popular: false,
-    color: "rose",
-  },
-];
-
-const bundlePrice = "79,99 â‚¬";
-const bundleSaved = "25,00 â‚¬";
-
