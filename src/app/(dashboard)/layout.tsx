@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { LayoutDashboard, BookOpen, BookA, Sigma, ScrollText, Repeat, Trophy, User, LogOut, ChevronRight, Bot } from "lucide-react";
 import { LangSelectorWrapper } from "@/components/shared/LangSelectorWrapper";
+import { AppIcon } from "@/components/brand/LogoMark";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -26,9 +27,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         {/* Brand */}
         <div className="p-5 border-b border-border/40">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg overflow-hidden shadow-sm">
-              <img src="/logo.png" alt="Wortwende" className="w-full h-full object-cover" />
-            </div>
+            <AppIcon size={32} className="shrink-0 rounded-md shadow-sm" />
             <div>
               <h1 className="text-base font-display font-bold text-foreground tracking-tight">Wortwende</h1>
               <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Deutsch lernen</p>

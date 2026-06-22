@@ -11,27 +11,47 @@ const plans = [
     name: "Kostenlos",
     price: "0 &euro;",
     period: "f&uuml;r immer",
-    description: "Perfekt zum Reinschnuppern",
+    description: "Reinschnuppern & testen",
     cta: "Kostenlos starten",
     href: "/register",
     popular: false,
     features: [
-      { text: "KI-Tutor: 10 Sessions/Tag", included: true },
+      { text: "KI-Tutor: 5 Sessions/Tag", included: true },
       { text: "Alle CEFR-Level A1&ndash;C1", included: true },
       { text: "10 Muttersprachen", included: true },
       { text: "Vokabeltrainer + Grammatik", included: true },
       { text: "Sprach-Eingabe (Mikrofon)", included: false },
-      { text: "Unbegrenzte KI-Sessions", included: false },
+      { text: "50+ KI-Sessions/Tag", included: false },
       { text: "Offline-Modus", included: false },
       { text: "Grammatik-Pr&uuml;fung", included: false },
     ],
     color: "border-border",
   },
   {
-    name: "Premium",
-    price: "7,99 &euro;",
+    name: "Plus",
+    price: "8,99 &euro;",
     period: "pro Monat",
-    description: "Alles freischalten &ndash; unbegrenzt lernen",
+    description: "Mehr KI-Power f&uuml;r Viel-Lerner",
+    cta: "Plus starten",
+    href: "/register?plan=plus",
+    popular: false,
+    features: [
+      { text: "KI-Tutor: 50 Sessions/Tag", included: true },
+      { text: "Alle CEFR-Level A1&ndash;C1", included: true },
+      { text: "10 Muttersprachen", included: true },
+      { text: "Vokabeltrainer + Grammatik", included: true },
+      { text: "Sprach-Eingabe (Mikrofon)", included: true },
+      { text: "Grammatik-Pr&uuml;fung (LanguageTool)", included: true },
+      { text: "Offline-Modus", included: true },
+      { text: "Keine Werbung, kein Tracking", included: true },
+    ],
+    color: "border-primary",
+  },
+  {
+    name: "Premium",
+    price: "12,99 &euro;",
+    period: "pro Monat",
+    description: "Unbegrenzt &ndash; f&uuml;r Power-Lerner",
     cta: "Premium starten",
     href: "/register?plan=premium",
     popular: true,
@@ -43,15 +63,15 @@ const plans = [
       { text: "Sprach-Eingabe (Mikrofon)", included: true },
       { text: "Grammatik-Pr&uuml;fung (LanguageTool)", included: true },
       { text: "Offline-Modus", included: true },
-      { text: "Keine Werbung, kein Tracking", included: true },
+      { text: "Priority-KI (schnellere Antworten)", included: true },
     ],
     color: "border-accent",
   },
   {
     name: "Premium Jahres",
-    price: "59,99 &euro;",
-    period: "pro Jahr (4,99 &euro;/Monat)",
-    description: "38% sparen &ndash; unsere Empfehlung",
+    price: "99,99 &euro;",
+    period: "pro Jahr (8,33 &euro;/Monat)",
+    description: "36% sparen &ndash; unsere Empfehlung",
     cta: "Jahresabo starten",
     href: "/register?plan=premium-yearly",
     popular: false,
@@ -63,17 +83,17 @@ const plans = [
       { text: "Sprach-Eingabe (Mikrofon)", included: true },
       { text: "Grammatik-Pr&uuml;fung (LanguageTool)", included: true },
       { text: "Offline-Modus", included: true },
-      { text: "38% g&uuml;nstiger als Monatsabo", included: true },
+      { text: "36% g&uuml;nstiger als Monatsabo", included: true },
     ],
     color: "border-primary",
   },
 ];
 
 const competitors = [
-  { name: "Duolingo Max (mit KI)", price: "29,99 &euro;/Monat", ai: "GPT-4", note: "Nur Englisch/Spanisch" },
+  { name: "Duolingo Max (mit KI)", price: "29,99 &euro;/Monat", ai: "GPT-5", note: "Nur Englisch/Spanisch" },
   { name: "Babbel Live", price: "49,99 &euro;/Monat", ai: "Keine KI", note: "Live-Tutoren, teuer" },
   { name: "Busuu Premium", price: "9,99 &euro;/Monat", ai: "Keine KI", note: "Community-Korrekturen" },
-  { name: "Wortwende Premium", price: "7,99 &euro;/Monat", ai: "DeepSeek V4", note: "KI-Tutor 24/7, 10 Sprachen" },
+  { name: "Wortwende Premium", price: "12,99 &euro;/Monat", ai: "DeepSeek V4", note: "KI-Tutor 24/7, 10 Sprachen" },
 ];
 
 export default function PricingPage() {
@@ -96,7 +116,7 @@ export default function PricingPage() {
 
       {/* Plans */}
       <section className="max-w-5xl mx-auto px-6 pb-16">
-        <Stagger className="grid md:grid-cols-3 gap-6">
+        <Stagger className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {plans.map((plan) => (
             <Card key={plan.name} className={`relative rounded-[28px] overflow-hidden border-2 ${plan.color} ${plan.popular ? "shadow-xl shadow-accent/10 scale-[1.03]" : ""}`}>
               {plan.popular && (
@@ -172,7 +192,7 @@ export default function PricingPage() {
         </Animated>
         <div className="space-y-4">
           {[
-            { q: "Warum ist Wortwende so gÃ¼nstig?", a: "Wir betreiben unsere eigenen Server (ZimaOS), nutzen Open-Source-Tools (LanguageTool, LibreTranslate) und zahlen nur die DeepSeek-API. Keine Investoren, keine Marketing-Budgets â€“ der Preis geht direkt an dich." },
+            { q: "Warum ist Wortwende so g&uuml;nstig?", a: "Wir betreiben eigene Server (ZimaOS), nutzen Open-Source-Tools (LanguageTool, LibreTranslate) und die DeepSeek-API – eine der g&uuml;nstigsten KI-APIs der Welt. Keine Investoren, keine Marketing-Budgets – der Preis geht direkt an dich." },
             { q: "Was passiert nach der kostenlosen Phase?", a: "Nichts. Der kostenlose Tarif bleibt fÃ¼r immer kostenlos. Du kannst jederzeit upgraden, aber wir drÃ¤ngen dich nicht." },
             { q: "Kann ich jederzeit kÃ¼ndigen?", a: "Ja. Monatsabo: jederzeit kÃ¼ndbar. Jahresabo: 14 Tage Widerrufsrecht. Keine versteckten Kosten." },
             { q: "Funktioniert der KI-Tutor auch offline?", a: "Im Premium-Tarif ja. Vokabeln, Grammatik und gespeicherte Lektionen sind offline verfÃ¼gbar. Der KI-Tutor braucht Internet." },

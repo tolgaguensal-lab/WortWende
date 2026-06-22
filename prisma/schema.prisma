@@ -528,6 +528,16 @@ model UserErrorProfile {
   @@index([userId])
 }
 
+// ── KI-Tutor Rate Limiting ──────────────────────────────────────────────────
+
+model TutorRequestLog {
+  id        String   @id @default(uuid())
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
 model ReviewQueue {
   id          String       @id @default(uuid())
   contentType String

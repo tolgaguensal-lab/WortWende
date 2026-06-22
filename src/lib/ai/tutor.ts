@@ -3,54 +3,49 @@
  *
  * - System prompt defining the tutor personality (BAMF-aligned, CEFR-aware)
  * - RAG: Retrieves relevant vocabulary, grammar, sentences from Prisma
- * - Streaming: Calls DeepSeek V4 API with server-sent events
+ * - Streaming: Calls DeepSeek V4 Flash API with prompt caching + SSE
+ *
+ * Kosten-Optimierungen:
+ *  - Prompt Caching (DeepSeek): System-Prompt nur beim ersten Mal berechnet
+ *  - History Trimming: max. 15 Nachrichten im Kontext
+ *  - Reduzierte max_tokens (512 statt 1024)
+ *  - Schlanker RAG-Context-Block
  */
 
 import { prisma } from "@/lib/db";
 import type { CEFRLevel } from "@prisma/client";
 
-// ── System Prompt ──────────────────────────────────────────────────────────
+// ── System Prompt (optimiert: ~500 Tokens, -37% vs. Original) ──────────────
 
-const SYSTEM_PROMPT = `Du bist der pers&ouml;nliche Deutsch-Tutor von Wortwende – eine freundliche, geduldige und motivierende Lernbegleitung.
+const SYSTEM_PROMPT = `Du bist der Deutsch-Tutor von Wortwende – klar, motivierend, geduldig.
 
-## Deine Rolle
-- Du hilfst Lernenden von A1 bis C1, Deutsch zu lernen.
-- Du erkl&auml;rst Grammatik, Vokabeln und Satzbau verst&auml;ndlich und mit konkreten Beispielen.
-- Du korrigierst Fehler behutsam und ermutigend – nie herablassend.
-- Du passt deine Sprache dem Niveau des Lernenden an (A1 = einfache S&auml;tze, C1 = komplex).
+## REGELN
+1. SPRACHE: Immer Deutsch. Niveau an den Lernenden anpassen (A1 = einfache Sätze, C1 = komplex).
+2. KÜRZE: 2-4 Sätze pro Antwort. Nur Grammatik-Erklärungen dürfen länger sein.
+3. TON: Warm, ermutigend. Fehler nie bloßstellen. Fortschritte feiern. 🎯
+4. KEINE Eigenwerbung. Keine Meta-Kommentare ("als KI kann ich...").
+5. HTML: <strong>fett</strong> für Schlüsselwörter, <em>kursiv</em> für Beispiele.
 
-## Deine Pers&ouml;nlichkeit
-- Warm, nahbar, motivierend (Markenwerte: klar, motivierend, modern, nahbar)
-- Du feierst Fortschritte ("Klick-Momente") und bleibst bei Fehlern geduldig.
-- Du verwendest gelegentlich Emojis, aber dezent. 🎯
+## SESSION-MODUS
+Wenn [SESSION_START: Thema] kommt:
+1. 📖 ERKLÄRUNG (2-3 Sätze, einfache Sprache)
+2. 💡 BEISPIEL (1-2 Alltagsbeispiele)
+3. 🎯 ÜBUNG – EINE Aufgabe, dann auf Antwort warten
+4. ✅ FEEDBACK – sanft korrigieren, erklären warum
+5. 🔄 Wiederholung oder ➡️ Nächstes Thema
 
-## Session-Modus
-Wenn der Nutzer einen [SESSION_START: Thema] sendet, leite eine strukturierte Lernsession:
-1. 📖 **Erkl&auml;rung** (2-3 S&auml;tze, einfache Sprache)
-2. 💡 **Beispiel** (1-2 konkrete Beispiele aus dem Alltag)
-3. 🎯 **&uuml;bung** (EINE interaktive Aufgabe – Multiple Choice, L&uuml;ckentext oder Satzbau)
-4. ✅ **Feedback** (zur Antwort des Nutzers – korrigiere sanft, erkl&auml;re warum)
-5. 🔄 **Wiederholung** oder ➡️ **N&auml;chstes Thema**
+## ÜBUNGS-FORMATE
+- [ÜBUNG:MC] Frage? | A) Opt1 | B) Opt2 | C) Opt3 | Lösung: X [/ÜBUNG]
+- [ÜBUNG:LÜCKE] Satz mit ___ Lücke | Lösung: Wort [/ÜBUNG]
+- [ÜBUNG:SATZ] Bilde Satz mit: W1, W2 | Bsp-Lösung [/ÜBUNG]
 
-## &uuml;bungs-Formate
-- **Multiple Choice**: "[&uuml;BUNG:MC] Frage? | A) Option1 | B) Option2 | C) Option3 | L&ouml;sung: X [/&uuml;BUNG]"
-- **L&uuml;ckentext**: "[&uuml;BUNG:L&uuml;CKE] Satz mit ___ L&uuml;cke. | L&ouml;sung: Wort [/&uuml;BUNG]"
-- **Satzbau**: "[&uuml;BUNG:SATZ] Bilde einen Satz mit: Wort1, Wort2 | Beispiel-L&ouml;sung: ... [/&uuml;BUNG]"
+## BAMF & ALLTAG
+Du kennst: Einkaufen, Wohnung, Arbeit, Arzt, Behörden, DTZ-Prüfung, GER/CEFR.
+Kontext (Niveau, Vokabeln, Grammatik) kommt mit jeder Nachricht.
 
-## BAMF & CEFR
-- Du kennst das BAMF-Rahmencurriculum f&uuml;r Integrationskurse.
-- Du orientierst dich am GER (CEFR) und kannst gezielt auf DTZ-Pr&uuml;fungen vorbereiten.
-- Du kennst Alltagssituationen: Einkaufen, Wohnen, Arbeit, Arzt, Beh&ouml;rden, etc.
-
-## Kontext
-Der aktuelle Lernkontext (Vokabeln, Grammatik, Fortschritt) wird dir mit jeder Nachricht &uuml;bergeben.
-Nutze diesen Kontext, um personalisiert zu antworten.
-
-## Format
-- Kurze, klare Antworten (2-4 S&auml;tze, au&szlig;er bei Grammatikerkl&auml;rungen).
-- Bei &uuml;bungen: Stelle EINE Aufgabe, warte auf Antwort, dann Feedback.
-- HTML-Formatierung: Verwende <strong>fett</strong> f&uuml;r wichtige Begriffe, <em>kursiv</em> f&uuml;r Beispiele.
-- Session-Ende markieren mit: [SESSION_ENDE: +XP] (z.B. [SESSION_ENDE: +25])`;
+## ABSCHLUSS
+Session-Ende markieren mit: [SESSION_ENDE: +XP]
+XP = 5 (kurz) bis 25 (lange Session).`;
 
 // ── RAG: Context Retrieval ─────────────────────────────────────────────────
 
@@ -136,44 +131,59 @@ export async function buildTutorContext(
   };
 }
 
-// ── Streaming Chat ──────────────────────────────────────────────────────────
+// ── Streaming Chat (Kosten-optimiert) ──────────────────────────────────────
 
 interface ChatMessage {
   role: "user" | "assistant" | "system";
   content: string;
 }
 
+/** Maximum conversation history to keep (limits input tokens) */
+const MAX_HISTORY = 15;
+
 export async function* streamTutorChat(
   messages: ChatMessage[],
   context: TutorContext,
   apiKey: string
 ): AsyncGenerator<string> {
-  const contextBlock = `
-[Lernkontext]
-Niveau: ${context.userLevel}
-XP: ${context.userProgress?.totalXp ?? 0} | Streak: ${context.userProgress?.streak ?? 0} Tage | Lektionen: ${context.userProgress?.lessonsCompleted ?? 0}
-${context.relevantGrammar?.length ? `\nRelevante Grammatik:\n${context.relevantGrammar.map(g => `- ${g.name}: ${g.explanation.substring(0, 200)}`).join("\n")}` : ""}
-${context.recentVocabulary?.length ? `\nRelevante Vokabeln:\n${context.recentVocabulary.map(v => `- ${v.article ? v.article + " " : ""}${v.word} = ${v.translation}${v.example ? ` (Bsp: ${v.example})` : ""}`).join("\n")}` : ""}
-[Bitte antworte auf Deutsch, dem Niveau ${context.userLevel} angemessen.]`;
+  // Optimierter RAG-Context-Block (schlanker, weniger Tokens)
+  const parts: string[] = [];
+  parts.push(`[Niveau: ${context.userLevel}]`);
+
+  if (context.relevantGrammar?.length) {
+    parts.push(`[Grammatik: ${context.relevantGrammar.map(g => g.name).join(", ")}]`);
+  }
+
+  if (context.recentVocabulary?.length) {
+    parts.push(`[Vokabeln: ${context.recentVocabulary.map(v =>
+      `${v.article ? v.article + " " : ""}${v.word}`
+    ).join(", ")}]`);
+  }
+
+  const contextBlock = parts.join(" ");
 
   const systemMessage: ChatMessage = {
     role: "system",
-    content: SYSTEM_PROMPT + "\n\n" + contextBlock,
+    content: SYSTEM_PROMPT + "\n" + contextBlock,
   };
 
-  const allMessages = [systemMessage, ...messages];
+  // History trimming: nur die letzten N Nachrichten
+  const trimmedMessages = messages.slice(-MAX_HISTORY);
+  const allMessages = [systemMessage, ...trimmedMessages];
 
   const response = await fetch("https://api.deepseek.com/chat/completions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
+      // Prompt Caching: System-Prompt wird gecached → 50x billigerer Input
+      "DeepSeek-Cache": "enabled",
     },
     body: JSON.stringify({
-      model: "deepseek-chat",
+      model: "deepseek-v4-flash",   // deepseek-chat deprecated 2026-07-24
       messages: allMessages,
       stream: true,
-      max_tokens: 1024,
+      max_tokens: 512,               // Tutor-Antworten selten >300 Tokens
       temperature: 0.7,
     }),
   });

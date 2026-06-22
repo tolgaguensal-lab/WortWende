@@ -32,18 +32,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-background flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-6">
-        <div className="text-center">
-          <Link href="/" className="inline-flex items-center gap-2 mb-8">
-            <div className="w-8 h-8 rounded-lg overflow-hidden shadow-sm">
-              <img src="/logo.png" alt="Wortwende" className="w-full h-full object-cover" />
-            </div>
-            <span className="text-lg font-display font-bold text-foreground tracking-tight">Wortwende</span>
-          </Link>
-        </div>
-
-        <Card className="card-premium">
+    <Card className="card-premium">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-2xl font-display font-bold">Willkommen zuruck</CardTitle>
             <CardDescription className="text-sm">Melde dich an, um weiterzulernen</CardDescription>
@@ -89,8 +78,6 @@ export default function LoginPage() {
               <Link href="/register" className="text-primary font-medium hover:underline">Registrieren</Link>
             </p>
           </CardFooter>
-        </Card>
-      </div>
-    </div>
+    </Card>
   );
 }

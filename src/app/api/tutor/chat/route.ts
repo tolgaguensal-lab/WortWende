@@ -1,18 +1,68 @@
 /**
- * POST /api/tutor/chat — Streaming AI Tutor Chat
+ * POST /api/tutor/chat — Streaming AI Tutor Chat (Kosten-optimiert)
  *
  * Expects: { messages: [{ role, content }] }
  * Returns: text/event-stream (SSE)
  *
  * Auth required via NextAuth session cookie.
+ * Rate-limited per user based on subscription tier.
  */
 
 import { NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
 import { buildTutorContext, streamTutorChat } from "@/lib/ai/tutor";
+import { prisma } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+// ── Rate Limiting (pro User, pro Tag) ──────────────────────────────────────
+
+const DAILY_LIMITS: Record<string, number> = {
+  free: 5,
+  plus: 50,
+  premium: Infinity,
+};
+
+async function getUserTier(userId: string): Promise<"free" | "plus" | "premium"> {
+  try {
+    const sub = await prisma.subscription.findUnique({
+      where: { userId },
+      select: { planId: true, status: true },
+    });
+    if (sub && sub.status === "active") {
+      if (sub.planId.includes("premium")) return "premium";
+      if (sub.planId.includes("plus")) return "plus";
+    }
+    return "free";
+  } catch {
+    return "free";
+  }
+}
+
+async function checkRateLimit(userId: string): Promise<{ allowed: boolean; remaining: number }> {
+  const tier = await getUserTier(userId);
+  const limit = DAILY_LIMITS[tier] ?? DAILY_LIMITS.free;
+  if (limit === Infinity) return { allowed: true, remaining: Infinity };
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const count = await prisma.tutorRequestLog.count({
+    where: {
+      userId,
+      createdAt: { gte: today },
+    },
+  });
+
+  return { allowed: count < limit, remaining: Math.max(0, limit - count - 1) };
+}
+
+async function logRequest(userId: string): Promise<void> {
+  try {
+    await prisma.tutorRequestLog.create({ data: { userId } });
+  } catch { /* non-blocking */ }
+}
 
 export async function POST(req: NextRequest) {
   // Auth check
@@ -40,6 +90,24 @@ export async function POST(req: NextRequest) {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
+  }
+
+  // ── Rate Limit Check ──────────────────────────────────────────────────
+  const { allowed, remaining } = await checkRateLimit(session.user.id);
+  if (!allowed) {
+    return new Response(
+      JSON.stringify({
+        error: "Tageslimit erreicht. Upgrade für unbegrenzten KI-Tutor.",
+        code: "RATE_LIMITED",
+      }),
+      {
+        status: 429,
+        headers: {
+          "Content-Type": "application/json",
+          "X-RateLimit-Remaining": String(remaining),
+        },
+      }
+    );
   }
 
   const apiKey = process.env.DEEPSEEK_API_KEY;
@@ -76,6 +144,8 @@ export async function POST(req: NextRequest) {
           encoder.encode(`data: ${JSON.stringify({ error: message })}\n\n`)
         );
       } finally {
+        // Log request for rate limiting (non-blocking)
+        logRequest(session.user.id);
         controller.close();
       }
     },

@@ -88,7 +88,14 @@ export function AIChat() {
 
         if (!response.ok) {
           const err = await response.json();
-          setMessages(prev => [...prev, { role: "assistant", content: `âŒ ${err.error ?? "Fehler"}` }]);
+          const remaining = response.headers.get("X-RateLimit-Remaining");
+          const msg = err.error ?? "Fehler";
+          setMessages(prev => [...prev, {
+            role: "assistant",
+            content: remaining
+              ? `⏳ ${msg} (Noch ${remaining} Anfragen heute)`
+              : `❌ ${msg}`,
+          }]);
           setLoading(false);
           return;
         }
