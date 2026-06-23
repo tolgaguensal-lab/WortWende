@@ -74,20 +74,20 @@ export default async function DashboardLayout({ children }: { children: React.Re
       </aside>
 
       {/* Main Content */}
-      <main className="md:ml-64 min-h-screen">
+      <main className="md:ml-64 min-h-screen pb-20 md:pb-0">
         {children}
       </main>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-lg border-t border-border/60 flex justify-around py-1.5 px-1 z-30">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-lg border-t border-border/60 flex justify-around py-2 px-2 z-30 safe-bottom">
         {navItems.slice(0, 5).map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className="flex flex-col items-center gap-0.5 text-[10px] text-muted-foreground hover:text-foreground transition-colors py-1.5 px-2.5 rounded-lg hover:bg-secondary/50 min-w-[60px]"
+            className="flex flex-col items-center justify-center gap-0.5 text-xs text-muted-foreground hover:text-foreground transition-colors py-1.5 px-2 rounded-lg hover:bg-secondary/50 min-w-[48px] min-h-[48px]"
           >
-            <item.icon size={18} className="mb-0.5" />
-            <span className="font-medium">{item.label.split(" ")[0]}</span>
+            <item.icon size={18} />
+            <span className="font-medium leading-none">{item.label.split(" ")[0]}</span>
           </Link>
         ))}
       </nav>

@@ -113,4 +113,6 @@
   .font-body { font-family: 'Nunito Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
   .font-display { font-family: 'Nunito', 'Nunito Sans', -apple-system, BlinkMacSystemFont, sans-serif; }
   .text-balance { text-wrap: balance; }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0.5rem); }
+  .safe-top { padding-top: env(safe-area-inset-top, 0px); }
 }

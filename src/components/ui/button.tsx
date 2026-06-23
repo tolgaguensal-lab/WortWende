@@ -18,7 +18,7 @@ const buttonVariants = cva(
         accent: "bg-accent text-accent-foreground hover:bg-accent-hover shadow-lg shadow-accent/25 font-extrabold",
       },
       size: {
-        sm: "h-9 px-4 text-[13px] font-medium",
+        sm: "h-9 px-4 text-[13px] font-medium min-h-[44px]",
         md: "h-[44px] px-5 text-[15px] font-semibold",
         lg: "h-[52px] px-7 text-base font-semibold",
         xl: "h-[60px] px-9 text-lg font-bold",

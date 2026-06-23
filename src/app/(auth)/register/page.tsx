@@ -74,7 +74,7 @@ export default function RegisterPage() {
                 <div className="relative">
                   <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60" />
                   <Input id="password" type={showPw ? "text" : "password"} placeholder="Mindestens 8 Zeichen" className="pl-9 pr-9 h-11" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
-                  <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 hover:text-foreground transition-colors" aria-label={showPw ? "Passwort verbergen" : "Passwort anzeigen"}>
+                  <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground/60 hover:text-foreground transition-colors p-2 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label={showPw ? "Passwort verbergen" : "Passwort anzeigen"}>
                     {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>

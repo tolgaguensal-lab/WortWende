@@ -46,15 +46,15 @@ export default async function HomePage() {
           <Link href="/" className="flex items-center gap-2.5">
             <LogoFull size={32} />
           </Link>
-          <div className="flex flex-wrap items-center gap-3 md:gap-6 text-xs md:text-sm font-medium text-muted-foreground">
+          <div className="hidden md:flex flex-wrap items-center gap-6 text-sm font-medium text-muted-foreground">
             <Link href="/tutor" className="text-accent font-bold hover:text-accent-hover transition-colors flex items-center gap-1"><Bot size={14} />KI-Tutor</Link>
             <Link href="/learn" className="hover:text-foreground transition-colors">Lernen</Link>
             <Link href="/placement-test" className="hover:text-foreground transition-colors">Einstufungstest</Link>
             <Link href="/pricing" className="text-amber-500 font-bold hover:text-amber-600 transition-colors flex items-center gap-1"><Zap size={13} />Preise</Link>
           </div>
-          <div className="flex items-center gap-3">
-            <Link href="/login"><Button variant="ghost" className="text-muted-foreground">Anmelden</Button></Link>
-            <Link href="/register"><Button variant="accent">Kostenlos starten</Button></Link>
+          <div className="flex items-center gap-2 md:gap-3">
+            <Link href="/login"><Button variant="ghost" size="sm" className="text-muted-foreground text-xs md:text-sm">Anmelden</Button></Link>
+            <Link href="/register"><Button variant="accent" size="sm" className="text-xs md:text-sm">Kostenlos starten</Button></Link>
           </div>
         </div>
       </nav>
