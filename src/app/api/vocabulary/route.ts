@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Fehler beim Laden der Vokabeln", details: error instanceof Error ? error.message : String(error) },
+      { error: "Fehler beim Laden der Vokabeln" },
       { status: 500 }
     );
   }

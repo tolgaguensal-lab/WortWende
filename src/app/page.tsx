@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -7,6 +8,16 @@ import { LogoFull } from "@/components/brand/LogoMark";
 import { LanguageDoorIllustration } from "@/components/brand/LanguageDoorIllustration";
 import { ArrowRight, Sparkles, Bot, MessageSquare, Mic, Globe, Brain, Zap, Target, Heart, BookOpen } from "lucide-react";
 import { Animated, Stagger, HoverCard } from "@/components/shared/Animated";
+
+export const metadata: Metadata = {
+  title: "Wortwende – Deutsch lernen mit KI-Tutor Leo",
+  description: "Lerne Deutsch von A1 bis C1 mit deinem persönlichen KI-Tutor Leo. 24/7 verfügbar, 10 Muttersprachen, BAMF-orientiert. Jetzt kostenlos starten.",
+  openGraph: {
+    title: "Wortwende – Deutsch lernen mit KI-Tutor",
+    description: "Dein persönlicher KI-Tutor für Deutsch. 24/7. Persönlich. Kostenlos starten.",
+    type: "website",
+  },
+};
 
 const tutorFeatures = [
   { icon: Brain, title: "KI-TUTOR 24/7", desc: "Dein pers&ouml;nlicher Deutsch-Lehrer – jederzeit verf&uuml;gbar, unendlich geduldig." },

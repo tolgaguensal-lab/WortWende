@@ -12,8 +12,8 @@ const languages = SUPPORTED_LANGUAGES.filter((l) => l.code !== "de");
 const langEmojis: Record<string, string> = { tr: "🇹🇷", ru: "🇷🇺", ar: "🇸🇦", pl: "🇵🇱", en: "🇬🇧", ro: "🇷🇴", uk: "🇺🇦", sq: "🇦🇱", ku: "🏳️", it: "🇮🇹" };
 
 const goals = [
-  { id: "alltag", title: "Alltag", desc: "Einkaufen, Arzttermine, Wohnungssuche, Behorden", emoji: "🏠" },
-  { id: "integration", title: "Integration", desc: "Integrationskurs, DTZ-Prufung", emoji: "🇩🇪" },
+  { id: "alltag", title: "Alltag", desc: "Einkaufen, Arzttermine, Wohnungssuche, Behörden", emoji: "🏠" },
+  { id: "integration", title: "Integration", desc: "Integrationskurs, DTZ-Prüfung", emoji: "🇩🇪" },
   { id: "beruf", title: "Beruf", desc: "Arbeitsplatz, Bewerbung, E-Mails", emoji: "💼" },
   { id: "pruefung", title: "Prufung", desc: "Goethe-/telc-Zertifikat", emoji: "🎓" },
 ];
@@ -86,7 +86,7 @@ export default function OnboardingPage() {
               <Languages size={28} className="text-primary" />
             </div>
             <h1 className="text-2xl font-display font-bold text-foreground mb-2">Willkommen bei Wortwende</h1>
-            <p className="text-muted-foreground text-sm mb-8">Wahle deine Muttersprache fur Hilfestellungen.</p>
+            <p className="text-muted-foreground text-sm mb-8">Wähle deine Muttersprache für Hilfestellungen.</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
               {languages.map((lang) => (
                 <button key={lang.code} onClick={() => handleLanguageSelect(lang.code)} disabled={loading}
@@ -132,7 +132,7 @@ export default function OnboardingPage() {
               <button onClick={() => setStep("goal")} className="text-muted-foreground hover:text-foreground transition-colors"><ArrowLeft size={18} /></button>
               <div>
                 <h2 className="text-xl font-display font-bold text-foreground">Wie viel Zeit hast du?</h2>
-                <p className="text-sm text-muted-foreground">Taglich realistisch fur dich.</p>
+                <p className="text-sm text-muted-foreground">Täglich realistisch für dich.</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">

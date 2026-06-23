@@ -11,8 +11,12 @@ export default function DatenschutzPage() {
           <h2 className="text-xl font-display font-semibold text-foreground">1. Verantwortlicher</h2>
           <p>Verantwortlicher für die Datenverarbeitung auf dieser Website ist:<br />Tolga Günsal<br />E-Mail: hallo@guenlab.de</p>
 
-          <h2 className="text-xl font-display font-semibold text-foreground">2. Erhebung und Verarbeitung personenbezogener Daten</h2>
+          <h2 className="text-xl font-display font-semibold text-foreground">2. Hosting &amp; Server-Standort</h2>
+          <p>Die Wortwende-Plattform wird auf eigenen Servern (ZimaOS, Deutschland) betrieben. Es findet kein Hosting durch Drittanbieter statt. Server-Logs (IP-Adresse, Zeitstempel, angeforderte URL) werden für maximal 30 Tage zur Missbrauchsabwehr gespeichert.</p>
+
+          <h2 className="text-xl font-display font-semibold text-foreground">3. Erhebung und Verarbeitung personenbezogener Daten</h2>
           <p>Wir erheben und verarbeiten personenbezogene Daten nur, soweit dies für die Bereitstellung unserer Dienste erforderlich ist. Dazu gehören: Name, E-Mail-Adresse, Lernfortschritte, Nutzungsstatistiken.</p>
+          <p><strong>Google OAuth:</strong> Du kannst dich mit deinem Google-Konto anmelden. Dabei werden dein Name und deine E-Mail-Adresse von Google an uns übermittelt. Google erhält die Information, dass du unsere App nutzt. Die Datenschutzerklärung von Google gilt zusätzlich: <a href="https://policies.google.com/privacy" className="text-primary hover:underline">policies.google.com/privacy</a>.</p>
 
           <h2 className="text-xl font-display font-semibold text-foreground">3. Zweck der Datenverarbeitung</h2>
           <p>Ihre Daten werden ausschließlich zur Bereitstellung und Verbesserung unseres Lernangebots verwendet, einschließlich: Personalisierung des Lernfortschritts, Bereitstellung von Statistiken, Versenden von Lernerinnerungen.</p>
