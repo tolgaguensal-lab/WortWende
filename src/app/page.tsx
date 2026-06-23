@@ -39,6 +39,7 @@ export default async function HomePage() {
             <Link href="/tutor" className="text-accent font-bold hover:text-accent-hover transition-colors flex items-center gap-1"><Bot size={15} />KI-Tutor</Link>
             <Link href="/learn" className="hover:text-foreground transition-colors">Lernen</Link>
             <Link href="/placement-test" className="hover:text-foreground transition-colors">Einstufungstest</Link>
+            <Link href="/pricing" className="text-amber-500 font-bold hover:text-amber-600 transition-colors flex items-center gap-1"><Zap size={14} />Preise</Link>
           </div>
           <div className="flex items-center gap-3">
             <Link href="/login"><Button variant="ghost" className="text-muted-foreground">Anmelden</Button></Link>

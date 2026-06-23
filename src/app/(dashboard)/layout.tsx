@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { LayoutDashboard, BookOpen, BookA, Sigma, ScrollText, Repeat, Trophy, User, LogOut, ChevronRight, Bot } from "lucide-react";
+import { LayoutDashboard, BookOpen, BookA, Sigma, ScrollText, Repeat, Trophy, User, LogOut, ChevronRight, Bot, Zap } from "lucide-react";
 import { LangSelectorWrapper } from "@/components/shared/LangSelectorWrapper";
 import { AppIcon } from "@/components/brand/LogoMark";
 
@@ -13,6 +13,7 @@ const navItems = [
   { href: "/dtz", label: "DTZ-Test", icon: ScrollText },
   { href: "/review", label: "Üben", icon: Repeat },
   { href: "/tutor", label: "KI-Tutor", icon: Bot },
+  { href: "/pricing", label: "Preise", icon: Zap },
   { href: "/leaderboard", label: "Rangliste", icon: Trophy },
 ];
 
