@@ -11,7 +11,7 @@ export default function NotFound() {
         </div>
         <h1 className="text-3xl font-display font-bold text-foreground mb-2">Seite nicht gefunden</h1>
         <p className="text-muted-foreground mb-8">Die Seite, die du suchst, existiert nicht.</p>
-        <Link href="/"><Button className="shadow-lg shadow-primary/20"><ArrowLeft size={16} className="mr-2" />Zuruck zur Startseite</Button></Link>
+        <Link href="/"><Button className="shadow-lg shadow-primary/20"><ArrowLeft size={16} className="mr-2" />Zurück zur Startseite</Button></Link>
       </div>
     </div>
   );
