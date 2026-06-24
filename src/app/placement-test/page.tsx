@@ -48,9 +48,16 @@ export default function PlacementTestPage() {
     setIsSubmitting(true);
     try {
       const res = await fetch("/api/placement-test/result", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ answers }) });
-      if (res.ok) router.push("/onboarding/result");
-      else alert("Fehler beim Speichern.");
-    } catch { alert("Netzwerkfehler."); }
+      if (res.ok) {
+        router.push("/onboarding/result");
+      } else if (res.status === 401) {
+        // Nicht eingeloggt → Ergebnisse in localStorage speichern + zum Login
+        localStorage.setItem("placementAnswers", JSON.stringify(answers));
+        router.push("/login?callbackUrl=/onboarding/result&placement=pending");
+      } else {
+        alert("Fehler beim Speichern. Bitte versuche es erneut.");
+      }
+    } catch { alert("Netzwerkfehler. Bitte prüfe deine Verbindung."); }
     finally { setIsSubmitting(false); }
   };
 
