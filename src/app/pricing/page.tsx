@@ -1,4 +1,4 @@
-"use client";
+ï»¿"use client";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -11,20 +11,20 @@ const plans = [
   {
     name: "Kostenlos",
     price: "0 &euro;",
-    period: "für immer",
+    period: "f&uuml;r immer",
     description: "Reinschnuppern & testen",
     cta: "Kostenlos starten",
     href: "/register",
     popular: false,
     features: [
       { text: "KI-Tutor Leo: 10 Sessions/Tag", included: true },
-      { text: "Alle CEFR-Level A1â€“C1", included: true },
+      { text: "Alle CEFR-Level A1&ndash;C1", included: true },
       { text: "10 Muttersprachen", included: true },
       { text: "Vokabeltrainer + Grammatik", included: true },
       { text: "Sprach-Eingabe (Mikrofon)", included: false },
       { text: "Rollenspiele mit Leo", included: false },
       { text: "Offline-Modus", included: false },
-      { text: "Grammatik-Prüfung", included: false },
+      { text: "Grammatik-Pr&uuml;fung", included: false },
     ],
     color: "border-border",
   },
@@ -32,18 +32,18 @@ const plans = [
     name: "Plus",
     price: "8,99 &euro;",
     period: "pro Monat",
-    description: "Mehr KI-Power für Viel-Lerner",
+    description: "Mehr KI-Power f&uuml;r Viel-Lerner",
     cta: "Plus starten",
     href: "/register?plan=plus",
     popular: false,
     features: [
       { text: "KI-Tutor Leo: 100 Sessions/Tag", included: true },
-      { text: "Alle CEFR-Level A1â€“C1", included: true },
+      { text: "Alle CEFR-Level A1&ndash;C1", included: true },
       { text: "10 Muttersprachen", included: true },
       { text: "Vokabeltrainer + Grammatik", included: true },
       { text: "Sprach-Eingabe (Mikrofon)", included: true },
       { text: "Rollenspiele mit Leo", included: true },
-      { text: "Grammatik-Prüfung (LanguageTool)", included: true },
+      { text: "Grammatik-Pr&uuml;fung (LanguageTool)", included: true },
       { text: "Keine Werbung, kein Tracking", included: true },
     ],
     color: "border-primary",
@@ -52,18 +52,18 @@ const plans = [
     name: "Premium",
     price: "12,99 &euro;",
     period: "pro Monat",
-    description: "300 Sessions/Tag â€“ für Power-Lerner",
+    description: "300 Sessions/Tag &ndash; f&uuml;r Power-Lerner",
     cta: "Premium starten",
     href: "/register?plan=premium",
     popular: true,
     features: [
       { text: "KI-Tutor Leo: <strong>300 Sessions/Tag</strong>", included: true },
-      { text: "Alle CEFR-Level A1â€“C1", included: true },
+      { text: "Alle CEFR-Level A1&ndash;C1", included: true },
       { text: "10 Muttersprachen", included: true },
       { text: "Vokabeltrainer + Grammatik", included: true },
       { text: "Sprach-Eingabe (Mikrofon)", included: true },
       { text: "Rollenspiele mit Leo", included: true },
-      { text: "Grammatik-Prüfung (LanguageTool)", included: true },
+      { text: "Grammatik-Pr&uuml;fung (LanguageTool)", included: true },
       { text: "Priority-KI (schnellere Antworten)", included: true },
     ],
     color: "border-accent",
@@ -72,19 +72,19 @@ const plans = [
     name: "Premium Jahres",
     price: "99,99 &euro;",
     period: "pro Jahr (8,33 &euro;/Monat)",
-    description: "36% sparen â€“ unsere Empfehlung",
+    description: "36% sparen &ndash; unsere Empfehlung",
     cta: "Jahresabo starten",
     href: "/register?plan=premium-yearly",
     popular: false,
     features: [
       { text: "KI-Tutor Leo: <strong>300 Sessions/Tag</strong>", included: true },
-      { text: "Alle CEFR-Level A1â€“C1", included: true },
+      { text: "Alle CEFR-Level A1&ndash;C1", included: true },
       { text: "10 Muttersprachen", included: true },
       { text: "Vokabeltrainer + Grammatik", included: true },
       { text: "Sprach-Eingabe (Mikrofon)", included: true },
       { text: "Rollenspiele mit Leo", included: true },
-      { text: "Grammatik-Prüfung (LanguageTool)", included: true },
-      { text: "36% günstiger als Monatsabo", included: true },
+      { text: "Grammatik-Pr&uuml;fung (LanguageTool)", included: true },
+      { text: "36% g&uuml;nstiger als Monatsabo", included: true },
     ],
     color: "border-primary",
   },
@@ -108,7 +108,7 @@ export default function PricingPage() {
             <Bot size={14} />Transparente Preise
           </div>
           <h1 className="text-4xl md:text-6xl font-display font-extrabold text-foreground mb-4">
-            Einfach. Fair. <span className="text-accent">Günstig.</span>
+            Einfach. Fair. <span className="text-accent">G&uuml;nstig.</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-4">
             Ein Preis. Alle Features. Kein Kleingedrucktes.
@@ -118,7 +118,7 @@ export default function PricingPage() {
 
       {/* Plans */}
       <section className="max-w-5xl mx-auto px-6 pb-16">
-        <h2 className="sr-only">Unsere PreisplÃ¤ne</h2>
+        <h2 className="sr-only">Unsere Preisplâ”œÃ±ne</h2>
         <Stagger className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {plans.map((plan) => (
             <Card key={plan.name} className={`relative rounded-[28px] overflow-hidden border-2 ${plan.color} ${plan.popular ? "shadow-xl shadow-accent/10 scale-[1.03]" : ""}`}>
@@ -191,15 +191,15 @@ export default function PricingPage() {
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-6 py-16">
         <Animated type="fadeUp" className="text-center mb-10">
-          <h2 className="text-2xl md:text-3xl font-display font-extrabold text-foreground mb-2">HÃ¤ufige Fragen</h2>
+          <h2 className="text-2xl md:text-3xl font-display font-extrabold text-foreground mb-2">Hâ”œÃ±ufige Fragen</h2>
         </Animated>
         <div className="space-y-4">
           {[
-            { q: "Warum ist Wortwende so günstig?", a: "Wir nutzen DeepSeek V4 Flash â€“ eines der gÃ¼nstigsten und leistungsfÃ¤higsten KI-Modelle der Welt (20x gÃ¼nstiger als GPT-4). Eigene Server (ZimaOS), Open-Source-Tools. Keine Investoren, keine Marketing-Budgets." },
-            { q: "Was passiert nach der kostenlosen Phase?", a: "Nichts. Der kostenlose Tarif bleibt für immer kostenlos. Du kannst jederzeit upgraden, aber wir drängen dich nicht." },
-            { q: "Kann ich jederzeit kündigen?", a: "Ja. Monatsabo: jederzeit kündbar. Jahresabo: 14 Tage Widerrufsrecht. Keine versteckten Kosten." },
-            { q: "Funktioniert der KI-Tutor auch offline?", a: "Im Premium-Tarif ja. Vokabeln, Grammatik und gespeicherte Lektionen sind offline verfügbar. Der KI-Tutor braucht Internet." },
-            { q: "Welche Sprachen unterstützt der KI-Tutor?", a: "Der Tutor spricht Deutsch als Zielsprache. Du kannst in 10 Sprachen mit ihm kommunizieren: Türkisch, Arabisch, Russisch, Polnisch, Rumänisch, Ukrainisch, Albanisch, Kurdisch, Italienisch und Englisch." },
+            { q: "Warum ist Wortwende so g&uuml;nstig?", a: "Wir nutzen DeepSeek V4 Flash Ã”Ã‡Ã´ eines der gâ”œâ•nstigsten und leistungsfâ”œÃ±higsten KI-Modelle der Welt (20x gâ”œâ•nstiger als GPT-4). Eigene Server (ZimaOS), Open-Source-Tools. Keine Investoren, keine Marketing-Budgets." },
+            { q: "Was passiert nach der kostenlosen Phase?", a: "Nichts. Der kostenlose Tarif bleibt f&uuml;r immer kostenlos. Du kannst jederzeit upgraden, aber wir dr&auml;ngen dich nicht." },
+            { q: "Kann ich jederzeit k&uuml;ndigen?", a: "Ja. Monatsabo: jederzeit k&uuml;ndbar. Jahresabo: 14 Tage Widerrufsrecht. Keine versteckten Kosten." },
+            { q: "Funktioniert der KI-Tutor auch offline?", a: "Im Premium-Tarif ja. Vokabeln, Grammatik und gespeicherte Lektionen sind offline verf&uuml;gbar. Der KI-Tutor braucht Internet." },
+            { q: "Welche Sprachen unterst&uuml;tzt der KI-Tutor?", a: "Der Tutor spricht Deutsch als Zielsprache. Du kannst in 10 Sprachen mit ihm kommunizieren: T&uuml;rkisch, Arabisch, Russisch, Polnisch, Rum&auml;nisch, Ukrainisch, Albanisch, Kurdisch, Italienisch und Englisch." },
           ].map((faq, i) => (
             <Card key={i} className="p-5 rounded-2xl border-border">
               <h3 className="font-semibold text-foreground text-sm mb-1">{faq.q}</h3>
@@ -212,8 +212,8 @@ export default function PricingPage() {
       {/* Bottom CTA */}
       <section className="bg-primary py-16 text-center">
         <div className="max-w-2xl mx-auto px-6">
-          <h2 className="text-2xl md:text-3xl font-display font-extrabold text-white mb-3">Bereit für deinen KI-Tutor?</h2>
-          <p className="text-white/60 mb-8">Starte kostenlos. Upgrade, wenn es dir gefällt. Kein Risiko.</p>
+          <h2 className="text-2xl md:text-3xl font-display font-extrabold text-white mb-3">Bereit f&uuml;r deinen KI-Tutor?</h2>
+          <p className="text-white/60 mb-8">Starte kostenlos. Upgrade, wenn es dir gef&auml;llt. Kein Risiko.</p>
           <Link href="/register"><Button variant="accent" size="lg" className="text-base px-8 py-6 h-auto font-extrabold"><Bot size={18} className="mr-2" />Kostenlos starten <ArrowRight size={16} className="ml-2" /></Button></Link>
         </div>
       </section>
