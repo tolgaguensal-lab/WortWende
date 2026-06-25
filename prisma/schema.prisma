@@ -15,6 +15,8 @@ model User {
   image          String?
   emailVerified  DateTime?
   hashedPassword String?
+  resetToken     String?
+  resetTokenExpires DateTime?
   role           UserRole            @default(USER)
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @updatedAt
