@@ -83,9 +83,11 @@ export function AIChat() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [mounted, setMounted] = useState(false);
   const { isListening, transcript, startListening, stopListening, supported: voiceSupported } =
     useVoiceInput({ lang: "de-DE" });
 
+  useEffect(() => { setMounted(true); }, []);
   useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight; }, [messages]);
   useEffect(() => { if (transcript) setInput(transcript); }, [transcript]);
 
@@ -198,7 +200,7 @@ export function AIChat() {
 
       {/* Personality + Topics (chat mode, first message) */}
       {mode === "chat" && messages.length <= 1 && (
-        <div className="px-4 py-3 border-b border-border/30 bg-gradient-to-r from-primary/5 to-accent/5 space-y-3">
+        <div className="px-4 py-3 border-b border-border/30 bg-gradient-to-r from-primary/5 to-accent/5 space-y-3" suppressHydrationWarning>
           <div>
             <p className="text-xs font-medium text-muted-foreground mb-1.5 flex items-center gap-1.5">
               <Smile size={12} className="text-accent" /> Tutor-Stil
@@ -290,7 +292,7 @@ export function AIChat() {
       {/* Input */}
       <div className="border-t border-border/40 bg-card/50 backdrop-blur-sm px-4 py-3">
         <div className="flex items-center gap-2">
-          {voiceSupported && (
+          {mounted && voiceSupported && (
             <button onClick={() => (isListening ? stopListening() : startListening())}
               className={`p-2.5 rounded-xl transition-all shrink-0 ${isListening ? "bg-accent text-white animate-pulse shadow-lg shadow-accent/30" : "bg-secondary text-muted-foreground hover:text-accent"}`}>
               {isListening ? <Mic size={18} /> : <MicOff size={18} />}
