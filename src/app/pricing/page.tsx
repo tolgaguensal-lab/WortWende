@@ -90,13 +90,6 @@ const plans = [
   },
 ];
 
-const competitors = [
-  { name: "Duolingo Max (mit KI)", price: "29,99 &euro;/Monat", ai: "GPT-5", note: "Nur Englisch/Spanisch" },
-  { name: "Babbel Live", price: "49,99 &euro;/Monat", ai: "Keine KI", note: "Live-Tutoren, teuer" },
-  { name: "Busuu Premium", price: "9,99 &euro;/Monat", ai: "Keine KI", note: "Community-Korrekturen" },
-  { name: "Wortwende Premium", price: "12,99 &euro;/Monat", ai: "DeepSeek V4", note: "KI-Tutor 24/7, 10 Sprachen" },
-];
-
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-background">
@@ -154,38 +147,6 @@ export default function PricingPage() {
             </Card>
           ))}
         </Stagger>
-      </section>
-
-      {/* Comparison Table */}
-      <section className="bg-card-highlight py-16">
-        <div className="max-w-4xl mx-auto px-6">
-          <Animated type="fadeUp" className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-display font-extrabold text-foreground mb-2">Im Vergleich zur Konkurrenz</h2>
-            <p className="text-muted-foreground text-sm">KI-Tutor zum besten Preis.</p>
-          </Animated>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="text-left py-3 px-4 font-semibold text-foreground">Anbieter</th>
-                  <th className="text-left py-3 px-4 font-semibold text-foreground">Preis</th>
-                  <th className="text-left py-3 px-4 font-semibold text-foreground">KI-Tutor</th>
-                  <th className="text-left py-3 px-4 font-semibold text-foreground">Besonderheit</th>
-                </tr>
-              </thead>
-              <tbody>
-                {competitors.map((c, i) => (
-                  <tr key={i} className={`border-b border-border/50 ${c.name.startsWith("Wortwende") ? "bg-accent/5 font-semibold" : ""}`}>
-                    <td className="py-3 px-4 text-foreground">{c.name}</td>
-                    <td className="py-3 px-4">{c.price}</td>
-                    <td className="py-3 px-4">{c.ai}</td>
-                    <td className="py-3 px-4 text-muted-foreground">{c.note}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
       </section>
 
       {/* FAQ */}
