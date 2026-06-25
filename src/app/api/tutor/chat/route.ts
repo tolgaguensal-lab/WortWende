@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Parse request
-  let body: { messages?: { role: string; content: string }[] };
+  let body: { messages?: { role: string; content: string }[]; personality?: string; mode?: string };
   try {
     body = await req.json();
   } catch {
@@ -133,6 +133,18 @@ export async function POST(req: NextRequest) {
           role: m.role as "user" | "assistant" | "system",
           content: m.content,
         }));
+
+        // Inject personality as system instruction
+        const personality = body.personality || "locker";
+        const personalityInstructions: Record<string, string> = {
+          streng: "[SYSTEM] Du bist STRENG. Korrigiere JEDEN Fehler direkt. Zeige: [KORREKTUR:falscher Text|korrigierter Text|kurze Erklärung]. Sei präzise und direkt. Kein Smalltalk.",
+          locker: "[SYSTEM] Du bist LOCKER. Ermutige den Lernenden. Korrigiere Fehler sanft mit [KORREKTUR:...|...|...]. Fehler sind okay – lobe zuerst, dann korrigiere.",
+          lustig: "[SYSTEM] Du bist LUSTIG. Verwende Emojis und Humor. Korrigiere Fehler mit [KORREKTUR:...|...|...] aber mach einen Witz dabei. Halte die Stimmung leicht.",
+        };
+        chatMessages.unshift({
+          role: "system",
+          content: personalityInstructions[personality] || personalityInstructions.locker,
+        });
 
         for await (const chunk of streamTutorChat(chatMessages, context, apiKey)) {
           fullResponse += chunk;
