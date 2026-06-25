@@ -13,7 +13,7 @@ const SECURITY_HEADERS: Record<string, string> = {
   "Permissions-Policy":
     "camera=(), microphone=(), geolocation=(), interest-cohort=()",
   "Content-Security-Policy":
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self'; connect-src 'self' https://api.deepseek.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://api.deepseek.com https://languagetool.org; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
 };
 
 type ResponseWithHeaders = NextResponse | Response;
