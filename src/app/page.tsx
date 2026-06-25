@@ -10,28 +10,28 @@ import { ArrowRight, Sparkles, Bot, MessageSquare, Mic, Globe, Brain, Zap, Targe
 import { Animated, Stagger, HoverCard } from "@/components/shared/Animated";
 
 export const metadata: Metadata = {
-  title: "Wortwende ÔÇô Deutsch lernen mit KI-Tutor Leo",
-  description: "Lerne Deutsch von A1 bis C1 mit deinem pers├Ânlichen KI-Tutor Leo. 24/7 verf├╝gbar, 10 Muttersprachen, BAMF-orientiert. Jetzt kostenlos starten.",
+  title: "Wortwende – Deutsch lernen mit KI-Tutor Leo",
+  description: "Lerne Deutsch von A1 bis C1 mit deinem persönlichen KI-Tutor Leo. 24/7 verfügbar, 10 Muttersprachen, BAMF-orientiert. Jetzt kostenlos starten.",
   openGraph: {
-    title: "Wortwende ÔÇô Deutsch lernen mit KI-Tutor",
-    description: "Dein pers├Ânlicher KI-Tutor f├╝r Deutsch. 24/7. Pers├Ânlich. Kostenlos starten.",
+    title: "Wortwende – Deutsch lernen mit KI-Tutor",
+    description: "Dein persönlicher KI-Tutor für Deutsch. 24/7. Persönlich. Kostenlos starten.",
     type: "website",
   },
 };
 
 const tutorFeatures = [
-  { icon: Brain, title: "KI-TUTOR 24/7", desc: "Dein pers&ouml;nlicher Deutsch-Lehrer ÔÇô jederzeit verf&uuml;gbar, unendlich geduldig." },
-  { icon: MessageSquare, title: "THEMEN-SESSIONS", desc: "Dativ? Perfekt? W&auml;hle ein Thema ÔÇô der Tutor f&uuml;hrt dich Schritt f&uuml;r Schritt." },
-  { icon: Mic, title: "SPRECHEN & H&Ouml;REN", desc: "Sprich mit dem Tutor &uuml;ber dein Mikrofon ÔÇô er versteht dich und antwortet." },
-  { icon: Globe, title: "10 MUTTERSPRACHEN", desc: "Lerne Deutsch aus deiner Sprache ÔÇô T&uuml;rkisch, Arabisch, Russisch und mehr." },
+  { icon: Brain, title: "KI-TUTOR 24/7", desc: "Dein persönlicher Deutsch-Lehrer – jederzeit verfügbar, unendlich geduldig." },
+  { icon: MessageSquare, title: "THEMEN-SESSIONS", desc: "Dativ? Perfekt? Wähle ein Thema – der Tutor führt dich Schritt für Schritt." },
+  { icon: Mic, title: "SPRECHEN & HÖREN", desc: "Sprich mit dem Tutor über dein Mikrofon – er versteht dich und antwortet." },
+  { icon: Globe, title: "10 MUTTERSPRACHEN", desc: "Lerne Deutsch aus deiner Sprache – Türkisch, Arabisch, Russisch und mehr." },
 ];
 
 const levels = [
-  { code: "A1", name: "Grundlagen", desc: "Erste W&ouml;rter und einfache S&auml;tze", color: "border-primary/30 bg-primary/5 text-primary" },
+  { code: "A1", name: "Grundlagen", desc: "Erste Wörter und einfache Sätze", color: "border-primary/30 bg-primary/5 text-primary" },
   { code: "A2", name: "Alltag", desc: "Alltag verstehen und reagieren", color: "border-sky-500/30 bg-sky-500/5 text-sky-600" },
   { code: "B1", name: "Sicher sprechen", desc: "Sicher kommunizieren im Alltag", color: "border-amber-500/30 bg-amber-500/5 text-amber-600" },
   { code: "B2", name: "Beruf &amp; Diskussion", desc: "Beruf, Meinung und Diskussion", color: "border-orange-500/30 bg-orange-500/5 text-orange-600" },
-  { code: "C1", name: "Frei sprechen", desc: "Pr&auml;zise, frei und selbstbewusst", color: "border-rose-500/30 bg-rose-500/5 text-rose-600" },
+  { code: "C1", name: "Frei sprechen", desc: "Präzise, frei und selbstbewusst", color: "border-rose-500/30 bg-rose-500/5 text-rose-600" },
 ];
 
 export default async function HomePage() {
@@ -59,7 +59,7 @@ export default async function HomePage() {
         </div>
       </nav>
 
-      {/* Hero ÔÇö KI-Tutor Fokus */}
+      {/* Hero — KI-Tutor Fokus */}
       <section className="max-w-7xl mx-auto px-6 pt-20 pb-16 md:py-28">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <Animated type="fadeUp">
@@ -68,12 +68,12 @@ export default async function HomePage() {
               NEU: KI-Tutor
             </div>
             <h1 className="text-5xl md:text-7xl font-display font-extrabold text-foreground leading-[1.05] tracking-tight mb-6">
-              Dein <span className="text-accent">KI-Tutor</span> f&uuml;r Deutsch.
+              Dein <span className="text-accent">KI-Tutor</span> für Deutsch.
               <br />
-              <span className="text-muted-foreground/40">24/7. Pers&ouml;nlich. Kostenlos.</span>
+              <span className="text-muted-foreground/40">24/7. Persönlich. Kostenlos.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl mb-8 leading-relaxed">
-              Lerne Deutsch im Gespr&auml;ch mit einer KI, die dich versteht. Grammatik, Vokabeln, Aussprache &ndash; dein Tutor erkl&auml;rt, &uuml;bt und korrigiert dich. In deiner Sprache.
+              Lerne Deutsch im Gespräch mit einer KI, die dich versteht. Grammatik, Vokabeln, Aussprache – dein Tutor erklärt, übt und korrigiert dich. In deiner Sprache.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/register"><Button variant="accent" size="lg" className="text-base px-8 py-6 h-auto font-extrabold shadow-lg shadow-accent/25">
@@ -88,12 +88,12 @@ export default async function HomePage() {
                 <div className="w-full h-full rounded-[36px] bg-card p-4 flex flex-col gap-3">
                   <div className="flex items-center gap-2 px-1">
                     <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center"><Bot size={14} className="text-white" /></div>
-                    <div><div className="text-xs font-bold">Leo ÔÇô KI-Tutor</div><div className="text-[10px] text-muted-foreground">Online &middot; 24/7 verf├╝gbar</div></div>
+                    <div><div className="text-xs font-bold">Leo – KI-Tutor</div><div className="text-[10px] text-muted-foreground">Online &middot; 24/7 verfügbar</div></div>
                   </div>
                   <div className="flex-1 flex flex-col gap-2">
-                    <div className="p-2.5 rounded-2xl bg-primary/5 border border-primary/10 text-xs">Hallo! &#128075; Ich bin <strong>Leo</strong>, dein Deutsch-Tutor. Sollen wir den <strong>Dativ</strong> &uuml;ben?</div>
+                    <div className="p-2.5 rounded-2xl bg-primary/5 border border-primary/10 text-xs">Hallo! &#128075; Ich bin <strong>Leo</strong>, dein Deutsch-Tutor. Sollen wir den <strong>Dativ</strong> üben?</div>
                     <div className="p-2.5 rounded-2xl bg-accent text-white text-xs ml-auto">Ja, los geht&apos;s!</div>
-                    <div className="p-2.5 rounded-2xl bg-primary/5 border border-primary/10 text-xs">&#127919; <strong>&Uuml;bung:</strong> Er schenkt ___ Kind ein Buch. Was passt?</div>
+                    <div className="p-2.5 rounded-2xl bg-primary/5 border border-primary/10 text-xs">&#127919; <strong>Übung:</strong> Er schenkt ___ Kind ein Buch. Was passt?</div>
                   </div>
                   <div className="flex gap-2">
                     <div className="flex-1 h-8 rounded-xl bg-muted/50 flex items-center px-3 text-[10px] text-muted-foreground">Deine Antwort...</div>
@@ -124,7 +124,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <Animated type="fadeUp" className="text-center mb-14">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 text-accent text-xs font-extrabold uppercase tracking-wider mb-4">
-              <Sparkles size={13} /> Revolution&auml;res Lernen
+              <Sparkles size={13} /> Revolutionäres Lernen
             </div>
             <h2 className="text-3xl md:text-4xl font-display font-extrabold text-foreground mb-4">Dein KI-Tutor kann das</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">Kein langweiliges Vokabelpauken. Echter Dialog. Echte Fortschritte.</p>
@@ -151,9 +151,9 @@ export default async function HomePage() {
         </Animated>
         <Stagger className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
           {[
-            { step: "1", icon: Globe, title: "Sprache w&auml;hlen", desc: "T&uuml;rkisch, Arabisch, Russisch &ndash; lerne Deutsch aus deiner Muttersprache." },
-            { step: "2", icon: Bot, title: "Thema aussuchen", desc: "Dativ, Perfekt, Bewerbung &ndash; der Tutor passt sich deinem Niveau an." },
-            { step: "3", icon: MessageSquare, title: "Loslegen", desc: "Sprich oder tippe &ndash; der Tutor erkl&auml;rt, &uuml;bt und korrigiert live." },
+            { step: "1", icon: Globe, title: "Sprache wählen", desc: "Türkisch, Arabisch, Russisch – lerne Deutsch aus deiner Muttersprache." },
+            { step: "2", icon: Bot, title: "Thema aussuchen", desc: "Dativ, Perfekt, Bewerbung – der Tutor passt sich deinem Niveau an." },
+            { step: "3", icon: MessageSquare, title: "Loslegen", desc: "Sprich oder tippe – der Tutor erklärt, übt und korrigiert live." },
           ].map((s) => (
             <div key={s.step} className="text-center">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mx-auto mb-4 text-white text-2xl font-extrabold shadow-lg">{s.step}</div>
@@ -170,7 +170,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <Animated type="fadeUp" className="text-center mb-14">
             <h2 className="text-3xl md:text-4xl font-display font-extrabold text-foreground mb-4">Dein Weg von A1 bis C1</h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">Vom ersten Wort zur selbstbewussten Kommunikation &ndash; mit deinem KI-Tutor an der Seite.</p>
+            <p className="text-muted-foreground max-w-xl mx-auto">Vom ersten Wort zur selbstbewussten Kommunikation – mit deinem KI-Tutor an der Seite.</p>
           </Animated>
           <Stagger className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {levels.map((l) => (
@@ -190,8 +190,8 @@ export default async function HomePage() {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-white/80 text-xs font-extrabold uppercase tracking-wider mb-6">
             <Bot size={14} />Kein Risiko &middot; komplett kostenlos
           </div>
-          <h2 className="text-3xl md:text-5xl font-display font-extrabold text-white mb-4">Bereit f&uuml;r deinen pers&ouml;nlichen KI-Tutor?</h2>
-          <p className="text-white/60 max-w-md mx-auto mb-8 text-lg">Starte jetzt &ndash; dein Deutsch-Tutor wartet schon auf dich.</p>
+          <h2 className="text-3xl md:text-5xl font-display font-extrabold text-white mb-4">Bereit für deinen persönlichen KI-Tutor?</h2>
+          <p className="text-white/60 max-w-md mx-auto mb-8 text-lg">Starte jetzt – dein Deutsch-Tutor wartet schon auf dich.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/register"><Button variant="accent" size="lg" className="text-base px-8 py-6 h-auto font-extrabold">
               <Bot size={20} className="mr-2" />Kostenlos mit KI lernen <ArrowRight size={18} className="ml-2" />
