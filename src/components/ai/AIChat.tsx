@@ -56,15 +56,17 @@ function extractCorrections(content: string) {
   return corrections;
 }
 
-function renderContent(content: string): string {
-  let html = content;
-  html = html.replace(/\[KORREKTUR:[^\]]+\]/g, "");
-  html = html.replace(/\[ÜBUNG:(MC|LÜCKE|SATZ)\][^]*?\[\/ÜBUNG\]/g,
-    '<div class="mt-2 p-3 rounded-xl bg-accent/5 border border-accent/20 text-xs font-medium">🎯 Übungsaufgabe</div>');
-  html = html.replace(/\[SESSION_ENDE:\s*\+\d+\]/g,
-    '<div class="mt-2 text-xs text-accent font-bold">✅ Session abgeschlossen!</div>');
-  html = html.replace(/\n/g, "<br/>");
-  return html;
+function renderContent(content: string): React.ReactNode {
+  // Remove KORREKTUR markers (rendered separately as CorrectionCard)
+  const cleaned = content.replace(/\[KORREKTUR:[^\]]+\]/g, "");
+  // Split by newlines and render with <br/>
+  const lines = cleaned.split("\n");
+  return lines.map((line, i) => (
+    <span key={i}>
+      {line}
+      {i < lines.length - 1 && <br />}
+    </span>
+  ));
 }
 
 export function AIChat() {
@@ -174,7 +176,7 @@ export function AIChat() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-2xl mx-auto">
+    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-2xl mx-auto" suppressHydrationWarning>
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3 border-b border-border/40 bg-card/50 backdrop-blur-sm">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-sm">
@@ -244,7 +246,7 @@ export function AIChat() {
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scrollbar-premium">
         {messages.map((msg, i) => {
           const corrections = extractCorrections(msg.content);
-          const cleanContent = renderContent(msg.content);
+          const displayContent = renderContent(msg.content);
           return (
             <div key={i} className={`flex gap-3 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
               {msg.role === "assistant" && (
@@ -257,8 +259,9 @@ export function AIChat() {
                   className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                     msg.role === "user" ? "bg-primary text-primary-foreground rounded-br-md" : "bg-card border border-border/50 text-foreground rounded-bl-md shadow-sm"
                   }`}
-                  dangerouslySetInnerHTML={{ __html: cleanContent }}
-                />
+                >
+                  {displayContent}
+                </div>
                 {corrections.map((c, ci) => (
                   <CorrectionCard key={ci} original={c.original} corrected={c.corrected} explanation={c.explanation} />
                 ))}
