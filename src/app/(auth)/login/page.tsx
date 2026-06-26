@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { t } from "@/lib/content";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -74,11 +75,11 @@ export default function LoginPage() {
           </CardContent>
           <CardFooter className="flex justify-center pb-6 pt-2 flex-col gap-3">
             <Link href="/forgot-password" className="text-xs text-muted-foreground hover:text-primary transition-colors">
-              Passwort vergessen?
+              {t("login.forgot")}
             </Link>
             <p className="text-sm text-muted-foreground">
-              Noch kein Konto?{" "}
-              <Link href="/register" className="text-primary font-medium hover:underline">Registrieren</Link>
+              {t("login.noAccount")}{" "}
+              <Link href="/register" className="text-primary font-medium hover:underline">{t("login.register")}</Link>
             </p>
           </CardFooter>
     </Card>

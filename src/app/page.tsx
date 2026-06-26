@@ -8,30 +8,31 @@ import { LogoFull } from "@/components/brand/LogoMark";
 import { LanguageDoorIllustration } from "@/components/brand/LanguageDoorIllustration";
 import { ArrowRight, Sparkles, Bot, MessageSquare, Mic, Globe, Brain, Zap, Target, Heart, BookOpen } from "lucide-react";
 import { Animated, Stagger, HoverCard } from "@/components/shared/Animated";
+import { t } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Wortwende – Deutsch lernen mit KI-Tutor Leo",
-  description: "Lerne Deutsch von A1 bis C1 mit deinem persönlichen KI-Tutor Leo. 24/7 verfügbar, 10 Muttersprachen, BAMF-orientiert. Jetzt kostenlos starten.",
+  title: t("app.name") + " – " + t("app.tagline"),
+  description: t("app.description"),
   openGraph: {
-    title: "Wortwende – Deutsch lernen mit KI-Tutor",
+    title: t("app.name") + " – Deutsch lernen mit KI-Tutor",
     description: "Dein persönlicher KI-Tutor für Deutsch. 24/7. Persönlich. Kostenlos starten.",
     type: "website",
   },
 };
 
 const tutorFeatures = [
-  { icon: Brain, title: "KI-TUTOR 24/7", desc: "Dein persönlicher Deutsch-Lehrer – jederzeit verfügbar, unendlich geduldig." },
-  { icon: MessageSquare, title: "THEMEN-SESSIONS", desc: "Dativ? Perfekt? Wähle ein Thema – der Tutor führt dich Schritt für Schritt." },
-  { icon: Mic, title: "SPRECHEN & HÖREN", desc: "Sprich mit dem Tutor über dein Mikrofon – er versteht dich und antwortet." },
-  { icon: Globe, title: "10 MUTTERSPRACHEN", desc: "Lerne Deutsch aus deiner Sprache – Türkisch, Arabisch, Russisch und mehr." },
+  { icon: Brain, title: t("landing.features.tutor24.title"), desc: t("landing.features.tutor24.desc") },
+  { icon: MessageSquare, title: t("landing.features.sessions.title"), desc: t("landing.features.sessions.desc") },
+  { icon: Mic, title: t("landing.features.speak.title"), desc: t("landing.features.speak.desc") },
+  { icon: Globe, title: t("landing.features.languages.title"), desc: t("landing.features.languages.desc") },
 ];
 
 const levels = [
-  { code: "A1", name: "Grundlagen", desc: "Erste Wörter und einfache Sätze", color: "border-primary/30 bg-primary/5 text-primary" },
-  { code: "A2", name: "Alltag", desc: "Alltag verstehen und reagieren", color: "border-sky-500/30 bg-sky-500/5 text-sky-600" },
-  { code: "B1", name: "Sicher sprechen", desc: "Sicher kommunizieren im Alltag", color: "border-amber-500/30 bg-amber-500/5 text-amber-600" },
-  { code: "B2", name: "Beruf &amp; Diskussion", desc: "Beruf, Meinung und Diskussion", color: "border-orange-500/30 bg-orange-500/5 text-orange-600" },
-  { code: "C1", name: "Frei sprechen", desc: "Präzise, frei und selbstbewusst", color: "border-rose-500/30 bg-rose-500/5 text-rose-600" },
+  { code: "A1", name: t("landing.levels.a1"), desc: t("landing.levels.a1.desc"), color: "border-primary/30 bg-primary/5 text-primary" },
+  { code: "A2", name: t("landing.levels.a2"), desc: t("landing.levels.a2.desc"), color: "border-sky/30 bg-sky-500/5 text-sky-400" },
+  { code: "B1", name: t("landing.levels.b1"), desc: t("landing.levels.b1.desc"), color: "border-amber/30 bg-amber-500/5 text-amber-400" },
+  { code: "B2", name: t("landing.levels.b2"), desc: t("landing.levels.b2.desc"), color: "border-orange/30 bg-orange-500/5 text-orange-400" },
+  { code: "C1", name: t("landing.levels.c1"), desc: t("landing.levels.c1.desc"), color: "border-rose/30 bg-rose-500/5 text-rose-400" },
 ];
 
 export default async function HomePage() {
@@ -65,7 +66,7 @@ export default async function HomePage() {
           <Animated type="fadeUp">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 text-accent text-xs font-extrabold uppercase tracking-wider mb-6">
               <Bot size={14} />
-              NEU: KI-Tutor
+              {t("landing.hero.badge")}
             </div>
             <h1 className="text-5xl md:text-7xl font-display font-extrabold text-foreground leading-[1.05] tracking-tight mb-6">
               Dein <span className="text-accent">KI-Tutor</span> für Deutsch.
@@ -77,9 +78,9 @@ export default async function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/register"><Button variant="accent" size="lg" className="text-base px-8 py-6 h-auto font-extrabold shadow-lg shadow-accent/25">
-                <Bot size={20} className="mr-2" />Jetzt mit KI-Tutor lernen <ArrowRight size={18} className="ml-2" />
+                <Bot size={20} className="mr-2" />{t("landing.hero.cta")} <ArrowRight size={18} className="ml-2" />
               </Button></Link>
-              <Link href="/placement-test"><Button variant="outline" size="lg" className="text-base px-8 py-6 h-auto border-border">Einstufungstest machen</Button></Link>
+              <Link href="/placement-test"><Button variant="outline" size="lg" className="text-base px-8 py-6 h-auto border-border">{t("landing.hero.secondary")}</Button></Link>
             </div>
           </Animated>
           <Animated type="scaleIn" delay={0.2} className="hidden lg:flex justify-center">
@@ -169,8 +170,8 @@ export default async function HomePage() {
       <section className="bg-card-highlight py-24">
         <div className="max-w-7xl mx-auto px-6">
           <Animated type="fadeUp" className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-display font-extrabold text-foreground mb-4">Dein Weg von A1 bis C1</h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">Vom ersten Wort zur selbstbewussten Kommunikation – mit deinem KI-Tutor an der Seite.</p>
+            <h2 className="text-3xl md:text-4xl font-display font-extrabold text-foreground mb-4">{t("landing.levels.title")}</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">{t("landing.levels.subtitle")}</p>
           </Animated>
           <Stagger className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {levels.map((l) => (
@@ -188,13 +189,13 @@ export default async function HomePage() {
       <section className="bg-primary py-24">
         <Animated type="scaleIn" className="max-w-3xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-white/80 text-xs font-extrabold uppercase tracking-wider mb-6">
-            <Bot size={14} />Kein Risiko &middot; komplett kostenlos
+            <Bot size={14} />{t("landing.cta.badge")}
           </div>
           <h2 className="text-3xl md:text-5xl font-display font-extrabold text-white mb-4">Bereit für deinen persönlichen KI-Tutor?</h2>
           <p className="text-white/60 max-w-md mx-auto mb-8 text-lg">Starte jetzt – dein Deutsch-Tutor wartet schon auf dich.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/register"><Button variant="accent" size="lg" className="text-base px-8 py-6 h-auto font-extrabold">
-              <Bot size={20} className="mr-2" />Kostenlos mit KI lernen <ArrowRight size={18} className="ml-2" />
+              <Bot size={20} className="mr-2" />{t("landing.cta.button")} <ArrowRight size={18} className="ml-2" />
             </Button></Link>
             <Link href="/placement-test"><Button variant="outline" size="lg" className="text-base px-8 py-6 h-auto border-white/20 text-white hover:bg-white/10">Einstufungstest machen</Button></Link>
           </div>
