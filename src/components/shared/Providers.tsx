@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { UpdateBanner } from "./UpdateBanner";
 import { LanguageProvider } from "./LanguageSelector";
 import { CookieConsent } from "./CookieConsent";
+import { ErrorTracker } from "./ErrorTracker";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -19,6 +20,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
         <LanguageProvider>
           {children}
+          <ErrorTracker />
           <UpdateBanner />
           <CookieConsent />
         </LanguageProvider>

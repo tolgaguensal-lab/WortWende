@@ -37,7 +37,10 @@
     "mobile:android:aab": "npx cap sync && cd android && ./gradlew bundleRelease && cd .. && echo 'AAB: android/app/build/outputs/bundle/release/app-release.aab'",
     "mobile:ios": "npx cap sync && cd ios && xcodebuild -workspace App.xcworkspace -scheme App -configuration Release 2>/dev/null || echo 'iOS build requires macOS with Xcode'",
     "mobile:open:android": "npx cap open android",
-    "mobile:open:ios": "npx cap open ios"
+    "mobile:open:ios": "npx cap open ios",
+    "smoke": "bash scripts/smoke-test.sh",
+    "smoke:local": "bash scripts/smoke-test.sh http://192.168.178.91:3035",
+    "test:all": "npm run lint && npm run typecheck && npm run test && npm run test:e2e"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
