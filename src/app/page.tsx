@@ -51,6 +51,7 @@ export default async function HomePage() {
             <Link href="/tutor" className="text-accent font-bold hover:text-accent-hover transition-colors flex items-center gap-1"><Bot size={14} />KI-Tutor</Link>
             <Link href="/learn" className="hover:text-foreground transition-colors">Lernen</Link>
             <Link href="/placement-test" className="hover:text-foreground transition-colors">Einstufungstest</Link>
+            <Link href="/methode" className="hover:text-foreground transition-colors">Methode</Link>
             <Link href="/pricing" className="text-amber-500 font-bold hover:text-amber-600 transition-colors flex items-center gap-1"><Zap size={13} />Preise</Link>
           </div>
           <div className="flex items-center gap-2 md:gap-3">
@@ -208,6 +209,7 @@ export default async function HomePage() {
           <LogoFull size={24} />
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
             <Link href="/pricing" className="text-amber-500 font-bold hover:text-amber-600 transition-colors" aria-label="Preise und Tarife">Preise</Link>
+            <Link href="/methode" className="hover:text-foreground transition-colors" aria-label="Unsere Methode">Methode</Link>
             <Link href="/datenschutz" className="hover:text-foreground transition-colors" aria-label="Datenschutzerklärung">Datenschutz</Link>
             <Link href="/impressum" className="hover:text-foreground transition-colors" aria-label="Impressum und rechtliche Informationen">Impressum</Link>
             <Link href="/agb" className="hover:text-foreground transition-colors" aria-label="Allgemeine Geschäftsbedingungen">AGB</Link>
