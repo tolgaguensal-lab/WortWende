@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -39,7 +39,8 @@ interface Lesson {
   exercises: Exercise[];
 }
 
-export default function LessonPage({ params }: { params: { lessonId: string } }) {
+export default function LessonPage({ params }: { params: Promise<{ lessonId: string }> }) {
+  const { lessonId } = use(params);
   const router = useRouter();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
@@ -52,11 +53,11 @@ export default function LessonPage({ params }: { params: { lessonId: string } })
   const [correct, setCorrect] = useState<boolean | null>(null);
 
   useEffect(() => {
-    fetch(`/api/lessons/${params.lessonId}`)
+    fetch(`/api/lessons/${lessonId}`)
       .then((r) => r.json())
       .then((data) => { setLesson(data); setLoading(false); })
       .catch(() => setLoading(false));
-  }, [params.lessonId]);
+  }, [lessonId]);
 
   const exercise = lesson?.exercises[current];
   const progress = lesson ? ((current) / lesson.exercises.length) * 100 : 0;

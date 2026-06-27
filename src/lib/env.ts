@@ -2,6 +2,7 @@ const REQUIRED_VARS = [
   "DATABASE_URL",
   "NEXTAUTH_URL",
   "NEXTAUTH_SECRET",
+  "DEEPSEEK_API_KEY",
 ] as const;
 
 const OPTIONAL_VARS = [
@@ -14,7 +15,6 @@ const OPTIONAL_VARS = [
   "LIBRETRANSLATE_URL",
   "TRANSLATION_PROVIDER",
   "NEXT_PUBLIC_APP_VERSION",
-  "DEEPSEEK_API_KEY",
 ] as const;
 
 export function validateEnv() {

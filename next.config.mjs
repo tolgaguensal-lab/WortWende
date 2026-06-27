@@ -44,9 +44,9 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ["lucide-react"],
-    outputFileTracingIncludes: {
-      "/*": ["./node_modules/bcryptjs/**/*", "./node_modules/@auth/**/*", "./node_modules/next-auth/**/*", "./node_modules/@prisma/**/*", "./node_modules/.prisma/**/*", "./node_modules/prisma/**/*"],
-    },
+  },
+  outputFileTracingIncludes: {
+    "/*": ["./node_modules/bcryptjs/**/*", "./node_modules/@auth/**/*", "./node_modules/next-auth/**/*", "./node_modules/@prisma/**/*", "./node_modules/.prisma/**/*", "./node_modules/prisma/**/*"],
   },
   serverExternalPackages: ["bcryptjs", "@auth/prisma-adapter"],
   async headers() {

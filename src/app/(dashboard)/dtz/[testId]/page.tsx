@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { TestRunner } from "@/components/dtz/TestRunner";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,21 +15,22 @@ interface Test {
   timeLimit: number;
 }
 
-export default function TestPage({ params }: { params: { testId: string } }) {
+export default function TestPage({ params }: { params: Promise<{ testId: string }> }) {
+  const { testId } = use(params);
   const router = useRouter();
   const [test, setTest] = useState<Test | null>(null);
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState<any>(null);
 
   useEffect(() => {
-    fetch(`/api/dtz-tests?id=${params.testId}`)
+    fetch(`/api/dtz-tests?id=${testId}`)
       .then((r) => r.json())
       .then((data) => {
         setTest(data);
         setResult(null);
       })
       .finally(() => setLoading(false));
-  }, [params.testId]);
+  }, [testId]);
 
   const handleComplete = (data: any) => {
     setResult(data);
@@ -85,7 +86,7 @@ export default function TestPage({ params }: { params: { testId: string } }) {
     </Card>
   ) : (
     <TestRunner
-      testId={params.testId}
+      testId={testId}
       test={test}
       onComplete={handleComplete}
     />
