@@ -85,6 +85,17 @@ RUN { \
 # Besitzer setzen
 RUN chown -R nextjs:nodejs /app
 
+# ZimaOS/CasaOS Labels — damit die App nicht als "Legacy" erscheint
+LABEL com.centurylinklabs.watchtower.enable="true"
+LABEL casaos.name="Wortwende"
+LABEL casaos.title="Wortwende"
+LABEL casaos.description="Deutsch lernen mit KI-Tutor Leo — von A1 bis C1"
+LABEL casaos.icon="https://raw.githubusercontent.com/tolgaguensal-lab/wortwende/main/public/icons/icon-192x192.svg"
+LABEL casaos.category="Education"
+LABEL casaos.port="3035"
+LABEL casaos.author="Tolga Günsal"
+LABEL casaos.web_ui="http://192.168.178.91:3035"
+
 USER nextjs
 
 EXPOSE 3000
