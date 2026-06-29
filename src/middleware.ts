@@ -4,6 +4,15 @@ const API_PREFIX = "/api/v1";
 const API_HOST = "api.wortwende.guenlab.de";
 const MAIN_HOST = "wortwende.guenlab.de";
 
+const REDIRECT_MAP: Record<string, string> = {
+  "/learn": "/tutor",
+  "/grammar": "/tutor",
+  "/dtz": "/tutor",
+  "/review": "/tutor",
+  "/leaderboard": "/tutor",
+  "/exercise": "/tutor",
+};
+
 /** Security-Header, die auf ALLE Responses angewendet werden */
 const SECURITY_HEADERS: Record<string, string> = {
   "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
@@ -30,6 +39,14 @@ const CSP_NONCE = false; // auf true setzen, wenn Nonce-basiertes CSP nötig ist
 export default function middleware(req: NextRequest) {
   const host = req.headers.get("host") || "";
   const { pathname } = req.nextUrl;
+
+  for (const [source, target] of Object.entries(REDIRECT_MAP)) {
+    if (pathname === source || pathname.startsWith(source + "/")) {
+      return applySecurityHeaders(
+        NextResponse.redirect(new URL(target, req.url), 307)
+      );
+    }
+  }
 
   // API-Domain → Nicht-API-Routen auf Main-Domain redirecten
   if (host === API_HOST && !pathname.startsWith(API_PREFIX)) {
@@ -86,6 +103,10 @@ export const config = {
     "/learn/:path*",
     "/exercise/:path*",
     "/review/:path*",
+    "/grammar/:path*",
+    "/dtz/:path*",
+    "/leaderboard/:path*",
+    "/tutor/:path*",
     "/profile/:path*",
     "/settings/:path*",
     "/admin/:path*",
