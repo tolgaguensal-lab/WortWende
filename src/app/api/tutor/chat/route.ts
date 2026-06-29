@@ -39,11 +39,11 @@ async function getUserRateInfo(userId: string): Promise<{ maxSessions: number; i
   }
 }
 
-async function checkRateLimit(userId: string): Promise<{ allowed: boolean; remaining: number }> {
+async function checkRateLimit(userId: string): Promise<{ allowed: boolean; remaining: number; maxSessions: number }> {
   const { maxSessions, isAdmin } = await getUserRateInfo(userId);
 
   if (isAdmin) {
-    return { allowed: true, remaining: 9999 };
+    return { allowed: true, remaining: 9999, maxSessions: 9999 };
   }
 
   const today = new Date();
@@ -56,7 +56,7 @@ async function checkRateLimit(userId: string): Promise<{ allowed: boolean; remai
     },
   });
 
-  return { allowed: count < maxSessions, remaining: Math.max(0, maxSessions - count - 1) };
+  return { allowed: count < maxSessions, remaining: Math.max(0, maxSessions - count - 1), maxSessions };
 }
 
 async function logRequest(userId: string): Promise<void> {
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
   }
 
   // ── Rate Limit Check ──────────────────────────────────────────────────
-  const { allowed, remaining } = await checkRateLimit(session.user.id);
+  const { allowed, remaining, maxSessions } = await checkRateLimit(session.user.id);
   if (!allowed) {
     return new Response(
       JSON.stringify({
@@ -106,6 +106,7 @@ export async function POST(req: NextRequest) {
         headers: {
           "Content-Type": "application/json",
           "X-RateLimit-Remaining": String(remaining),
+          "X-RateLimit-Limit": String(maxSessions),
         },
       }
     );
@@ -188,6 +189,7 @@ export async function POST(req: NextRequest) {
       Connection: "keep-alive",
       "X-Accel-Buffering": "no",
       "X-RateLimit-Remaining": String(remaining),
+      "X-RateLimit-Limit": String(maxSessions),
     },
   });
 }

@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import Link from "next/link";
 import {
   Send, Bot, User, Loader2, Mic, MicOff,
   BookOpen, Sparkles, Trophy, Smile, Gauge, Flame
@@ -8,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useVoiceInput } from "@/hooks/useVoiceInput";
 import { CorrectionCard } from "@/components/ai/CorrectionCard";
+import { UpgradePrompt } from "@/components/ai/UpgradePrompt";
 
 interface Message {
   role: "user" | "assistant";
@@ -87,6 +89,10 @@ export function AIChat() {
   const { isListening, transcript, startListening, stopListening, supported: voiceSupported } =
     useVoiceInput({ lang: "de-DE" });
 
+  const [sessionsRemaining, setSessionsRemaining] = useState(10);
+  const [maxSessions, setMaxSessions] = useState(10);
+  const [rateLimited, setRateLimited] = useState(false);
+
   useEffect(() => { setMounted(true); }, []);
   useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight; }, [messages]);
   useEffect(() => { if (transcript) setInput(transcript); }, [transcript]);
@@ -109,17 +115,29 @@ export function AIChat() {
           body: JSON.stringify({ messages: updatedMessages, personality, mode }),
         });
 
+        const remainingHeader = response.headers.get("X-RateLimit-Remaining");
+        const limitHeader = response.headers.get("X-RateLimit-Limit");
+
+        if (remainingHeader) setSessionsRemaining(parseInt(remainingHeader));
+        if (limitHeader) setMaxSessions(parseInt(limitHeader));
+
         if (!response.ok) {
           const err = await response.json();
-          const remaining = response.headers.get("X-RateLimit-Remaining");
+          if (response.status === 429) {
+            setRateLimited(true);
+            setLoading(false);
+            return;
+          }
           const msg = err.error ?? "Fehler";
           setMessages(prev => [...prev, {
             role: "assistant",
-            content: remaining ? `⏳ ${msg} (Noch ${remaining} Anfragen heute)` : `❌ ${msg}`,
+            content: remainingHeader ? `⏳ ${msg} (Noch ${remainingHeader} Anfragen heute)` : `❌ ${msg}`,
           }]);
           setLoading(false);
           return;
         }
+
+        setRateLimited(false);
 
         const reader = response.body?.getReader();
         if (!reader) throw new Error("No stream");
@@ -177,6 +195,11 @@ export function AIChat() {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
   };
 
+  const sessionsToLevel: Record<number, string> = { 10: "A1", 100: "A2", 200: "B1", 300: "B2", 500: "C1" };
+  const currentLevel = sessionsToLevel[maxSessions] ?? "A1";
+  const sessionsUsed = maxSessions - sessionsRemaining;
+  const showLowWarning = sessionsRemaining <= 2 && sessionsRemaining > 0 && !rateLimited;
+
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] max-w-2xl mx-auto" suppressHydrationWarning>
       {/* Header */}
@@ -193,10 +216,37 @@ export function AIChat() {
             {loading ? "Schreibt..." : mode === "session" ? `Session · +${sessionXp} XP` : `Online · ${PERSONALITIES.find(p => p.id === personality)?.label}`}
           </p>
         </div>
-        {mode === "session" && (
-          <Button variant="ghost" size="sm" onClick={() => { setMode("chat"); setSessionTopic(""); }} className="text-xs">Beenden</Button>
-        )}
+        <div className="flex items-center gap-2">
+          <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
+            showLowWarning ? "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400" : "bg-secondary text-muted-foreground"
+          }`}>
+            <Flame size={12} className={showLowWarning ? "text-amber-500" : "text-muted-foreground"} />
+            <span>{sessionsRemaining}/{maxSessions}</span>
+          </div>
+          {mode === "session" && (
+            <Button variant="ghost" size="sm" onClick={() => { setMode("chat"); setSessionTopic(""); }} className="text-xs">Beenden</Button>
+          )}
+        </div>
       </div>
+
+      {/* Rate Limit / Upgrade Banners */}
+      {rateLimited && (
+        <div className="px-4 pt-3">
+          <UpgradePrompt
+            currentLevel={currentLevel}
+            sessionsRemaining={sessionsRemaining}
+            onClose={() => setRateLimited(false)}
+          />
+        </div>
+      )}
+      {showLowWarning && (
+        <div className="px-4 pt-2">
+          <div className="text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/30 rounded-lg px-3 py-2 flex items-center gap-2">
+            <Flame size={12} />
+            Noch {sessionsRemaining} {sessionsRemaining === 1 ? "Session" : "Sessions"} heute – <Link href="/pricing" className="underline font-medium">Upgrade?</Link>
+          </div>
+        </div>
+      )}
 
       {/* Personality + Topics (chat mode, first message) */}
       {mode === "chat" && messages.length <= 1 && (
@@ -301,10 +351,10 @@ export function AIChat() {
           <input ref={inputRef} type="text" value={input} onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={isListening ? "Höre zu..." : mode === "session" ? "Deine Antwort..." : "Frag mich etwas auf Deutsch..."}
-            disabled={loading}
+            disabled={loading || rateLimited}
             className="flex-1 bg-background border border-border/60 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent disabled:opacity-50"
           />
-          <Button onClick={() => sendMessage()} disabled={!input.trim() || loading} size="icon"
+          <Button onClick={() => sendMessage()} disabled={!input.trim() || loading || rateLimited} size="icon"
             className="rounded-xl shrink-0 bg-accent hover:bg-accent-hover text-white shadow-lg shadow-accent/20 h-10 w-10">
             {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
           </Button>

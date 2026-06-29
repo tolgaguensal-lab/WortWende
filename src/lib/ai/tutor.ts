@@ -14,6 +14,7 @@ import { prisma } from "@/lib/db";
 import type { CEFRLevel } from "@prisma/client";
 import { TOOL_SYSTEM_PROMPT } from "@/lib/ai/tutor-tools";
 import { buildErrorContext } from "@/lib/ai/error-patterns";
+import { getHighestPurchasedLevel } from "@/lib/auth/entitlements";
 
 // ═══════════════════════════════════════════════════════════════════════════
 // SYSTEM PROMPT — Der KI-Agent (Leo)
@@ -86,9 +87,9 @@ export async function buildTutorContext(
 ): Promise<TutorContext> {
   const profile = await prisma.userProfile.findUnique({
     where: { userId },
-    select: { currentLevel: true, totalXp: true, nativeLanguage: true, targetGoal: true },
+    select: { totalXp: true, nativeLanguage: true, targetGoal: true },
   });
-  const userLevel = (profile?.currentLevel ?? "A1") as CEFRLevel;
+  const userLevel = await getHighestPurchasedLevel(userId);
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
