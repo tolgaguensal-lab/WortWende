@@ -12,37 +12,39 @@ import { auth } from "@/lib/auth";
 import { buildTutorContext, streamTutorChat, parseToolCalls, ChatMessage } from "@/lib/ai/tutor";
 import { executeTool } from "@/lib/ai/tutor-tools";
 import { prisma } from "@/lib/db";
+import { getHighestPurchasedLevel, LEVEL_TIERS } from "@/lib/auth/entitlements";
+import { UserRole } from "@prisma/client";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// ── Rate Limiting (pro User, pro Tag) ──────────────────────────────────────
+// ── Rate Limiting (pro User, pro Tag, Level-basiert) ────────────────────
 
-const DAILY_LIMITS: Record<string, number> = {
-  free: 10,
-  plus: 100,
-  premium: 300,
-};
-
-async function getUserTier(userId: string): Promise<"free" | "plus" | "premium"> {
+async function getUserRateInfo(userId: string): Promise<{ maxSessions: number; isAdmin: boolean }> {
   try {
-    const sub = await prisma.subscription.findUnique({
-      where: { userId },
-      select: { planId: true, status: true },
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true },
     });
-    if (sub && sub.status === "active") {
-      if (sub.planId.includes("premium")) return "premium";
-      if (sub.planId.includes("plus")) return "plus";
+
+    if (user?.role === UserRole.ADMIN) {
+      return { maxSessions: Infinity, isAdmin: true };
     }
-    return "free";
+
+    const level = await getHighestPurchasedLevel(userId);
+    const config = LEVEL_TIERS[level] ?? LEVEL_TIERS.A1;
+    return { maxSessions: config.sessionsPerDay, isAdmin: false };
   } catch {
-    return "free";
+    return { maxSessions: LEVEL_TIERS.A1.sessionsPerDay, isAdmin: false };
   }
 }
 
 async function checkRateLimit(userId: string): Promise<{ allowed: boolean; remaining: number }> {
-  const tier = await getUserTier(userId);
-  const limit = DAILY_LIMITS[tier] ?? DAILY_LIMITS.free;
+  const { maxSessions, isAdmin } = await getUserRateInfo(userId);
+
+  if (isAdmin) {
+    return { allowed: true, remaining: 9999 };
+  }
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -54,7 +56,7 @@ async function checkRateLimit(userId: string): Promise<{ allowed: boolean; remai
     },
   });
 
-  return { allowed: count < limit, remaining: Math.max(0, limit - count - 1) };
+  return { allowed: count < maxSessions, remaining: Math.max(0, maxSessions - count - 1) };
 }
 
 async function logRequest(userId: string): Promise<void> {
@@ -185,6 +187,7 @@ export async function POST(req: NextRequest) {
       "Cache-Control": "no-cache",
       Connection: "keep-alive",
       "X-Accel-Buffering": "no",
+      "X-RateLimit-Remaining": String(remaining),
     },
   });
 }
