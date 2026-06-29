@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth";
 
-export async function GET(_req: Request, { params }: { params: { lessonId: string } }) {
+export async function GET(_req: Request, { params }: { params: Promise<{ lessonId: string }> }) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Nicht authentifiziert" }, { status: 401 });
 
   const lesson = await prisma.lesson.findUnique({
-    where: { id: params.lessonId },
+    where: { id: (await params).lessonId },
     include: {
       lessonSteps: { orderBy: { order: "asc" } },
       exercises: { 

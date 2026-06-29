@@ -53,3 +53,4 @@ ios/App/DerivedData/
 ios/*.xcworkspace/xcuserdata/
 ios/*.xcodeproj/xcuserdata/
 
+android/app/*.keystore

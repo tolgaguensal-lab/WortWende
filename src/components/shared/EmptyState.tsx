@@ -25,7 +25,7 @@ export function EmptyState({
   return (
     <div className={cn("flex flex-col items-center justify-center text-center max-w-sm mx-auto p-8 gap-4", className)}>
       <div className="text-muted-foreground/30">
-        {React.cloneElement(icon as React.ReactElement, { 
+        {React.cloneElement(icon as React.ReactElement<any>, { 
           className: "size-12" 
         })}
       </div>

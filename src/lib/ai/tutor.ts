@@ -191,6 +191,30 @@ export interface ChatMessage {
 
 const MAX_HISTORY = 15;
 
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Retry Wrapper mit exponential backoff
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function fetchWithRetry(url: string, options: RequestInit, retries = 2): Promise<Response> {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15_000);
+      const response = await fetch(url, { ...options, signal: controller.signal });
+      clearTimeout(timeout);
+      if (response.ok || attempt === retries) return response;
+      if (response.status >= 500) throw new Error('Server error ' + response.status);
+      return response; // Client errors nicht retryen
+    } catch (error) {
+      if (attempt === retries) throw error;
+      const delay = Math.min(1000 * Math.pow(2, attempt), 4000);
+      await new Promise(r => setTimeout(r, delay));
+    }
+  }
+  throw new Error('Unreachable');
+}
+
 export async function* streamTutorChat(
   messages: ChatMessage[],
   context: TutorContext,
@@ -208,7 +232,7 @@ export async function* streamTutorChat(
   const trimmedMessages = messages.slice(-MAX_HISTORY);
   const allMessages = [systemMessage, ...trimmedMessages];
 
-  const response = await fetch("https://api.deepseek.com/chat/completions", {
+  const response = await fetchWithRetry("https://api.deepseek.com/chat/completions", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}`, "DeepSeek-Cache": "enabled" },
     body: JSON.stringify({ model: "deepseek-v4-flash", messages: allMessages, stream: true, max_tokens: 512, temperature: 0.7 }),

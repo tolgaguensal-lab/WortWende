@@ -16,7 +16,7 @@ export function ArticleBattle({ question, words, onAnswer }: Props) {
   const [timeLeft, setTimeLeft] = useState(30);
   const [selected, setSelected] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null);
-  const timerRef = useRef<NodeJS.Timeout>();
+  const timerRef = useRef<NodeJS.Timeout>(null);
   const scoreRef = useRef(0);
   const onAnswerRef = useRef(onAnswer);
   onAnswerRef.current = onAnswer;
@@ -28,14 +28,14 @@ export function ArticleBattle({ question, words, onAnswer }: Props) {
     timerRef.current = setInterval(() => {
       setTimeLeft((t) => {
         if (t <= 1) {
-          clearInterval(timerRef.current);
+          if (timerRef.current) clearInterval(timerRef.current);
           onAnswerRef.current(scoreRef.current);
           return 0;
         }
         return t - 1;
       });
     }, 1000);
-    return () => clearInterval(timerRef.current);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, []);
 
   function handleSelect(article: string) {

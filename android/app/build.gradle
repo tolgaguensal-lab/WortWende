@@ -18,8 +18,29 @@ android {
             hostName: "wortwende.guenlab.de"
         ]
     }
+
+    signingConfigs {
+        release {
+            if (System.getenv('CI')) {
+                storeFile rootProject.file('wortwende.keystore')
+                storePassword System.getenv('ANDROID_KEYSTORE_PASSWORD')
+                keyAlias 'wortwende'
+                keyPassword System.getenv('ANDROID_KEYSTORE_PASSWORD')
+            } else {
+                def ksFile = rootProject.file('wortwende.keystore')
+                if (ksFile.exists()) {
+                    storeFile ksFile
+                    storePassword System.getenv('ANDROID_KEYSTORE_PASSWORD') ?: 'wortwende'
+                    keyAlias 'wortwende'
+                    keyPassword System.getenv('ANDROID_KEYSTORE_PASSWORD') ?: 'wortwende'
+                }
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

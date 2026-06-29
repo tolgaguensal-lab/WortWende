@@ -69,3 +69,5 @@ jobs:
         run: npm run test
         env:
           DATABASE_URL: postgresql://wortheld:test@localhost:5432/wortheld
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: test-secret-12345678901234567890
